@@ -68,10 +68,15 @@ const description =
 
 <Base {title} {description} schema={localBusinessSchema}>
   <Hero />
-  <Services />
   <PartyGallery />
 
-  {/* Second shot at the lead, right after they've scrolled the photos. */}
+  {/*
+    Proof, then the ask, then the detail.
+
+    The gallery earns the right to ask, so it comes first and the form lands
+    under three screens in. Anyone who needs to read what she actually offers
+    before enquiring finds it immediately below.
+  */}
   <section id="event-inquiry" class="section section--alt">
     <div class="wrap band">
       <div class="band__copy">
@@ -89,6 +94,7 @@ const description =
     </div>
   </section>
 
+  <Services />
   <ArtFeature />
   <About />
   <Contact />

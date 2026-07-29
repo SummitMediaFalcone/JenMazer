@@ -22,14 +22,30 @@ export const site = {
   phone: '', // TODO — optional, but strongly recommended for the party side
 
   // --- Location -----------------------------------------------------------
-  // REQUIRED for the party/event side of the business. Baby showers, banners,
-  // and pastries are local searches ("baby shower decorations near me"), and
-  // Google will not rank her for them without a city and service area.
+  // This is what powers the whole party side. Baby showers, banners, and
+  // pastries are local searches ("baby shower decorations near me"), and the
+  // LocalBusiness schema on the homepage only renders once a city is set.
   location: {
-    city: '', // TODO e.g. 'Tampa'
-    state: '', // TODO e.g. 'FL'
-    // Towns/counties she'll travel to for events. Each one becomes a keyword.
-    serviceArea: [] as string[], // TODO e.g. ['Tampa', 'St. Petersburg', 'Clearwater']
+    city: 'West Palm Beach',
+    state: 'FL',
+    // Towns she travels to. Each one becomes a keyword and an areaServed entry
+    // in the structured data. Ordered by how close they are to home, because
+    // proximity is a real ranking factor for service-area businesses — Google
+    // trusts a West Palm Beach business ranking in Delray far more than in Miami.
+    serviceArea: [
+      'West Palm Beach',
+      'Palm Beach Gardens',
+      'Wellington',
+      'Lake Worth',
+      'Boynton Beach',
+      'Delray Beach',
+      'Jupiter',
+      'Boca Raton',
+      'Stuart',
+      'Port St. Lucie',
+      'Fort Lauderdale',
+      'Miami',
+    ] as string[],
   },
 
   // --- Social -------------------------------------------------------------

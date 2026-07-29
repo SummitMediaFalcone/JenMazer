@@ -1,0 +1,339 @@
+---
+/*
+ * Scroll-snap slideshow.
+ *
+ * Built on native scroll-snap rather than a JS transform track: touch swipe,
+ * momentum, and keyboard scrolling all come free from the browser and behave
+ * correctly. JS only adds the arrows, the dots, and autoplay — so if it fails
+ * to load, this degrades to a plain horizontal scroller instead of a dead box.
+ */
+
+export type Slide = {
+  src: string;
+  alt: string;
+  caption?: string;
+  category?: string;
+};
+
+interface Props {
+  slides: Slide[];
+  /** 'hero' = one small square. 'gallery' = larger, peeking neighbours. */
+  variant?: 'hero' | 'gallery';
+  /** Milliseconds between auto-advances. 0 disables autoplay. */
+  interval?: number;
+  label: string;
+}
+
+const { slides, variant = 'gallery', interval = 4500, label } = Astro.props;
+---
+
+<div
+  class:list={['slides', `slides--${variant}`]}
+  data-interval={interval}
+  role="group"
+  aria-roledescription="carousel"
+  aria-label={label}
+>
+  <div class="slides__viewport" tabindex="0">
+    <ul class="slides__track">
+      {slides.map((s, i) => (
+        <li class="slides__item" aria-label={`${i + 1} of ${slides.length}`}>
+          <figure>
+            <img
+              src={s.src}
+              alt={s.alt}
+              loading={i < 2 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+            {(s.caption || s.category) && (
+              <figcaption>
+                {s.category && <span class="cat">{s.category}</span>}
+                {s.caption && <span class="cap">{s.caption}</span>}
+              </figcaption>
+            )}
+          </figure>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <button type="button" class="nav nav--prev" aria-label="Previous">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button type="button" class="nav nav--next" aria-label="Next">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <div class="dots" role="tablist" aria-label="Choose slide"></div>
+</div>
+
+<style>
+  .slides {
+    position: relative;
+  }
+
+  .slides__viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    border-radius: var(--radius);
+  }
+  .slides__viewport::-webkit-scrollbar { display: none; }
+
+  .slides__track {
+    display: flex;
+    gap: var(--gap);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .slides__item {
+    flex: 0 0 var(--slide-w);
+    /* start, not center: with several slides visible, centre-snapping means
+       the first "next" click lands on a slide that's already centred and
+       nothing appears to happen. */
+    scroll-snap-align: start;
+  }
+
+  .slides__item figure {
+    position: relative;
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--cream-deep);
+    box-shadow: var(--shadow);
+  }
+
+  .slides__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  figcaption {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: grid;
+    gap: 0.1rem;
+    padding: 2.75rem 1rem 0.9rem;
+    color: #fff;
+    background: linear-gradient(to top, rgba(13, 15, 38, 0.9), transparent);
+  }
+
+  .cat {
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lemon);
+  }
+
+  .cap {
+    font-family: var(--font-display);
+    font-size: 1.02rem;
+    line-height: 1.2;
+  }
+
+  /* --- variants ---------------------------------------------------------- */
+  .slides--gallery {
+    --gap: clamp(0.6rem, 1.4vw, 1rem);
+    --slide-w: min(78%, 22rem);
+  }
+  .slides--gallery .slides__item { aspect-ratio: 4 / 5; }
+
+  @media (min-width: 700px) {
+    .slides--gallery { --slide-w: 20rem; }
+  }
+
+  .slides--hero {
+    --gap: 0.5rem;
+    --slide-w: 100%;
+  }
+  .slides--hero .slides__item { aspect-ratio: 1; }
+  .slides--hero figcaption { display: none; }
+
+  /* --- arrows ------------------------------------------------------------ */
+  .nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    padding: 0;
+    color: var(--navy-deep);
+    background: rgba(253, 250, 243, 0.94);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+    z-index: 2;
+  }
+
+  .nav svg { width: 1.1rem; height: 1.1rem; }
+  .nav:hover { background: var(--lemon); }
+  .nav[disabled] { opacity: 0.35; cursor: default; }
+  .nav[disabled]:hover { background: rgba(253, 250, 243, 0.94); }
+
+  .nav--prev { left: 0.5rem; }
+  .nav--next { right: 0.5rem; }
+
+  .slides--hero .nav {
+    width: 1.9rem;
+    height: 1.9rem;
+  }
+  .slides--hero .nav svg { width: 0.85rem; height: 0.85rem; }
+
+  /* --- dots -------------------------------------------------------------- */
+  .dots {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.9rem;
+  }
+
+  .dots button {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    background: var(--border);
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .dots button[aria-selected='true'] {
+    background: var(--orange);
+    transform: scale(1.45);
+  }
+
+  .slides--hero .dots { margin-top: 0.55rem; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.slides').forEach((root) => {
+    const viewport = root.querySelector<HTMLElement>('.slides__viewport')!;
+    const items = Array.from(root.querySelectorAll<HTMLElement>('.slides__item'));
+    const prev = root.querySelector<HTMLButtonElement>('.nav--prev')!;
+    const next = root.querySelector<HTMLButtonElement>('.nav--next')!;
+    const dots = root.querySelector<HTMLElement>('.dots')!;
+    const interval = Number(root.dataset.interval || 0);
+    if (!items.length) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let index = 0;
+    let timer: number | undefined;
+
+    // Build the dots here rather than in markup so a JS failure doesn't leave
+    // a row of controls that do nothing.
+    items.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-label', `Slide ${i + 1}`);
+      b.addEventListener('click', () => {
+        go(i);
+        stop();
+      });
+      dots.appendChild(b);
+    });
+    const dotEls = Array.from(dots.querySelectorAll('button'));
+
+    /**
+     * Where the track actually ends up when slide `i` is selected.
+     *
+     * The final slides sit further right than the track can ever scroll, so
+     * their raw offsetLeft is unreachable. Clamping to maxScroll is what makes
+     * the tail behave: several of the last slides legitimately share the same
+     * resting position, and the dots have to agree with that.
+     */
+    function targetFor(i: number) {
+      const max = viewport.scrollWidth - viewport.clientWidth;
+      return Math.min(items[i].offsetLeft, Math.max(0, max));
+    }
+
+    function go(i: number) {
+      index = Math.max(0, Math.min(items.length - 1, i));
+      // scrollLeft rather than scrollIntoView — the latter also scrolls the
+      // page vertically, which yanks the viewport around mid-read.
+      viewport.scrollTo({
+        left: targetFor(index),
+        behavior: reduced ? 'auto' : 'smooth',
+      });
+      sync();
+    }
+
+    function sync() {
+      dotEls.forEach((d, i) =>
+        d.setAttribute('aria-selected', String(i === index))
+      );
+      prev.disabled = index === 0;
+      next.disabled = index === items.length - 1;
+    }
+
+    // Track manual scrolling / swiping so the dots stay honest.
+    let raf = 0;
+    viewport.addEventListener('scroll', () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const left = viewport.scrollLeft;
+        let best = 0;
+        let bestDist = Infinity;
+        items.forEach((_, i) => {
+          const d = Math.abs(targetFor(i) - left);
+          // <= so that when tail slides tie on the same clamped position, the
+          // furthest one wins — scrolled to the end should light the last dot.
+          if (d <= bestDist) { bestDist = d; best = i; }
+        });
+        index = best;
+        sync();
+      });
+    }, { passive: true });
+
+    prev.addEventListener('click', () => { go(index - 1); stop(); });
+    next.addEventListener('click', () => { go(index + 1); stop(); });
+
+    viewport.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); stop(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); stop(); }
+    });
+
+    function start() {
+      if (!interval || reduced || timer) return;
+      timer = window.setInterval(() => {
+        go(index >= items.length - 1 ? 0 : index + 1);
+      }, interval);
+    }
+
+    function stop() {
+      if (timer) { clearInterval(timer); timer = undefined; }
+    }
+
+    // Pause while someone is actually looking at or using it.
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('touchstart', stop, { passive: true });
+    root.addEventListener('mouseleave', start);
+
+    // Don't animate off-screen — pure battery drain.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        ([entry]) => (entry.isIntersecting ? start() : stop()),
+        { threshold: 0.25 }
+      ).observe(root);
+    } else {
+      start();
+    }
+
+    sync();
+  });
+</script>

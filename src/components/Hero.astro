@@ -3,34 +3,14 @@ import Signature from './Signature.astro';
 import PartyQuiz from './PartyQuiz.astro';
 
 /*
- * Copy on the left, lead box on the right.
+ * Copy on the left, lead box on the right. That's it.
  *
- * The quiz is the primary conversion path on the whole site — it sits above
- * the fold, next to the pitch, and asks for an email only after four taps.
- *
- * A thin strip of real work sits under the copy so the hero isn't all text.
- * Jen's face is in the quiz header, where it does the most good: people are
- * about to hand her their kid's birthday.
+ * The only image up here is Jen, and she sits on the lead box where she does
+ * the most work: party clients are handing a person their kid's birthday, so
+ * her face belongs next to the thing they're about to fill in. Her work has
+ * its own slideshow immediately below the fold — repeating it in the hero only
+ * split attention away from the form.
  */
-
-const strip = [
-  {
-    src: '/images/parties/unicorn-rainbow-sugar-cookies-jenifer-mazer.jpg',
-    alt: 'Trays of pastel rainbow, cloud and unicorn sugar cookies on a styled party table',
-  },
-  {
-    src: '/images/banners/twinkle-twinkle-little-star-baby-shower-banner-jenifer-mazer.jpg',
-    alt: 'Hand-painted twinkle twinkle little star baby shower banner with clouds and gold stars',
-  },
-  {
-    src: '/images/parties/cannoli-cream-puffs-dessert-platter-jenifer-mazer.jpg',
-    alt: 'Platter of filled cannoli and powdered-sugar cream puffs',
-  },
-  {
-    src: '/images/parties/flamingo-sugar-cookies-jenifer-mazer.jpg',
-    alt: 'Tray of coral pink flamingo-shaped iced sugar cookies',
-  },
-];
 ---
 
 <section class="hero">
@@ -49,18 +29,12 @@ const strip = [
         pieces from four different stores.
       </p>
 
-      <ul class="strip">
-        {strip.map((s, i) => (
-          <li>
-            <img
-              src={s.src}
-              alt={s.alt}
-              loading={i < 2 ? 'eager' : 'lazy'}
-              decoding="async"
-            />
-          </li>
-        ))}
-      </ul>
+      {/*
+        No images in this column. Jen's portrait carries the lead box on the
+        right, and the work has its own slideshow immediately below the fold —
+        duplicating it here only split attention away from the one thing that
+        matters up top, which is the form.
+      */}
 
       <p class="hero__note">
         She also paints. <a href="#art">Hand-painted originals →</a>
@@ -76,66 +50,39 @@ const strip = [
 <style>
   .hero {
     position: relative;
-    padding-block: clamp(2.25rem, 6vw, 4.5rem) clamp(3rem, 8vw, 5.5rem);
+    padding-block: clamp(2.25rem, 6vw, 4rem) clamp(3rem, 8vw, 5.5rem);
     overflow: hidden;
   }
 
-  /* Soft citrus wash behind the hero, echoing her canvases. */
+  /* Citrus wash behind the hero, lifted from her canvases. */
   .hero::before {
     content: '';
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(50rem 30rem at 82% 10%, rgba(255, 210, 30, 0.2), transparent 65%),
-      radial-gradient(38rem 26rem at 8% 80%, rgba(244, 97, 26, 0.14), transparent 62%);
+      radial-gradient(50rem 30rem at 82% 8%, rgba(255, 210, 30, 0.2), transparent 65%),
+      radial-gradient(38rem 26rem at 6% 82%, rgba(244, 97, 26, 0.15), transparent 62%);
     pointer-events: none;
   }
 
   .hero__inner {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
     gap: clamp(2rem, 5vw, 4rem);
     align-items: center;
   }
 
-  .hero__sig { margin-bottom: 1.4rem; }
+  .hero__sig { margin-bottom: 1.35rem; }
   @media (prefers-color-scheme: dark) {
     .hero__sig { color: var(--lemon) !important; }
   }
 
-  .hero__headline { margin-bottom: 1.15rem; }
+  .hero__headline { margin-bottom: 1.1rem; }
   .hero__headline em { font-style: italic; color: var(--orange); }
 
-  .strip {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.55rem;
-    list-style: none;
-    margin: 2rem 0 0;
-    padding: 0;
-    max-width: 30rem;
-  }
-
-  .strip li {
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    border-radius: 4px;
-    background: var(--cream-deep);
-    box-shadow: var(--shadow);
-  }
-
-  .strip img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-  }
-
-  .strip li:hover img { transform: scale(1.08); }
-
   .hero__note {
-    margin: 1.35rem 0 0;
+    margin: 1.75rem 0 0;
     font-size: var(--step--1);
     color: var(--text-muted);
   }
@@ -152,8 +99,8 @@ const strip = [
 
   @media (max-width: 940px) {
     .hero__inner { grid-template-columns: 1fr; }
-    /* Lead box first on mobile — it's the conversion, the copy can wait. */
+    /* Lead box first on mobile — it's the conversion; copy can wait. */
     .hero__lead { order: -1; }
-    .strip { max-width: none; }
   }
+
 </style>
