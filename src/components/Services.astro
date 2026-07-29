@@ -13,9 +13,16 @@ const where = site.location.city
     <h2>The whole celebration, designed by one pair of hands.</h2>
     <p class="lede">
       Most parties get assembled from four different stores. Jen designs
-      them as one idea — the banner, the table, the favors, and the pastries all
+      them as one idea — the banner, the table, the favors, and the desserts all
       drawn from the same palette, made for your family and nobody else's.
-      Serving {where}.
+    </p>
+
+    <p class="areas">
+      Serving <strong>{where}</strong> and Palm Beach County —
+      {site.location.serviceArea.slice(1).join(', ')}.
+      {site.location.travelsTo.length > 0 && (
+        <> She travels to {site.location.travelsTo.join(', ')} for larger events.</>
+      )}
     </p>
 
     <div class="services">
@@ -149,4 +156,16 @@ const where = site.location.city
   .services__cta {
     margin-top: clamp(2.5rem, 5vw, 3.5rem);
   }
+
+  /* The service-area line is doing SEO work, not decorative work — every
+     town named here is a query she could plausibly rank for. */
+  .areas {
+    margin: 1rem 0 0;
+    max-width: 62ch;
+    font-size: var(--step--1);
+    line-height: 1.6;
+    color: #b8bce0;
+  }
+
+  .areas strong { color: var(--lemon); font-weight: 600; }
 </style>

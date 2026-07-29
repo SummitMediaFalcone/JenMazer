@@ -28,24 +28,34 @@ export const site = {
   location: {
     city: 'West Palm Beach',
     state: 'FL',
-    // Towns she travels to. Each one becomes a keyword and an areaServed entry
-    // in the structured data. Ordered by how close they are to home, because
-    // proximity is a real ranking factor for service-area businesses — Google
-    // trusts a West Palm Beach business ranking in Delray far more than in Miami.
+    // Towns she genuinely works. These become areaServed in the structured
+    // data and the visible "serving" line.
+    //
+    // Ordered by proximity, and deliberately NOT padded out. Proximity is a
+    // real ranking factor for service-area businesses, and an overstuffed list
+    // reads as less specific to Google, not more. Twelve honest cities beat
+    // forty aspirational ones.
     serviceArea: [
       'West Palm Beach',
+      'Lake Worth Beach',
+      'Lantana',
       'Palm Beach Gardens',
       'Wellington',
-      'Lake Worth',
+      'Royal Palm Beach',
+      'Greenacres',
       'Boynton Beach',
       'Delray Beach',
       'Jupiter',
       'Boca Raton',
-      'Stuart',
       'Port St. Lucie',
-      'Fort Lauderdale',
-      'Miami',
     ] as string[],
+
+    // Reachable, but a 60–90 minute drive with a car full of desserts. Named
+    // on the site as "will travel" rather than claimed as a home market —
+    // claiming Miami outright would dilute the local signal without ever
+    // ranking there, since the vendor bench down south is the deepest in the
+    // state. See SEO-PLAN.md §2.
+    travelsTo: ['Fort Lauderdale', 'Miami', 'Stuart', 'Vero Beach'] as string[],
   },
 
   // --- Social -------------------------------------------------------------
