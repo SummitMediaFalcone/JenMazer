@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------------------
 
 export const site = {
-  name: 'Jennifer Mazer',
+  name: 'Jenifer Mazer',
   // She goes by Jen — one N. Used in body copy; the full name stays for the
   // logo, the legal footer, and structured data.
   firstName: 'Jen',
@@ -15,10 +15,10 @@ export const site = {
   shortDescription:
     'Party design, hand-painted banners, custom cookies and pastries, and original paintings by Jen Mazer.',
 
-  url: 'https://jennifermazer.com', // TODO: confirm domain
+  url: 'https://jenifermazer.com', // TODO: confirm domain
 
   // --- Contact ------------------------------------------------------------
-  email: 'hello@jennifermazer.com', // TODO
+  email: 'hello@jenifermazer.com', // TODO
   phone: '', // TODO — optional, but strongly recommended for the party side
 
   // --- Location -----------------------------------------------------------
@@ -35,7 +35,7 @@ export const site = {
   // --- Social -------------------------------------------------------------
   // Leave a value empty to hide that icon. Instagram matters most for artists.
   social: {
-    instagram: '', // TODO e.g. 'https://instagram.com/jennifermazerart'
+    instagram: '', // TODO e.g. 'https://instagram.com/jenifermazerart'
     facebook: '',
     pinterest: '', // Genuinely valuable for party + baby shower discovery
     etsy: '',

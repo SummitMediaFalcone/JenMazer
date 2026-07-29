@@ -90,7 +90,7 @@ From the research, ordered by impact:
    Merchant Center — genuinely free traffic that most artists never claim.
 
 3. **Google Images.** Massively underrated for artists. Descriptive filenames and
-   real alt text — `harbor-light-monotype-jennifer-mazer.jpg`, not `IMG_4471.jpg`.
+   real alt text — `harbor-light-monotype-jenifer-mazer.jpg`, not `IMG_4471.jpg`.
 
 4. **Content that answers buyer anxiety.** "What is a giclée print?" "How do limited
    editions work?" "How do I choose a size?" These rank well *and* close sales,
@@ -99,7 +99,7 @@ From the research, ordered by impact:
 5. **Speed and mobile.** Most art browsing is on a phone. Slow image-heavy sites
    lose both rankings and buyers.
 
-6. **The artist's own name.** She should rank #1 for "Jennifer Mazer" — that's the
+6. **The artist's own name.** She should rank #1 for "Jenifer Mazer" — that's the
    query that fires after someone sees her work at a show or on Instagram. Person
    schema plus consistent name usage across every profile is how that happens.
 

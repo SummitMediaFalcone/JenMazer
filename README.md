@@ -1,4 +1,4 @@
-# Jennifer Mazer — Artist & Party Design
+# Jenifer Mazer — Artist & Party Design
 
 Astro static site. Original art and prints (sold via Stripe Checkout) plus
 party/event services (custom banners, baby showers, pastries, party design).
@@ -31,7 +31,7 @@ structured data that puts the price in Google results.
 {
   slug: 'harbor-light',              // becomes /art/harbor-light
   title: 'Harbor Light',
-  image: 'harbor-light-jennifer-mazer.jpg',  // lives in public/images/art/
+  image: 'harbor-light-jenifer-mazer.jpg',  // lives in public/images/art/
   alt: 'Acrylic painting of ...',    // literal description — this is SEO
   medium: 'Acrylic on canvas',
   dimensions: '18 × 24 in',

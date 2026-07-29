@@ -18,7 +18,7 @@ I need: her city, her state, and the towns she'll travel to for events.
 
 ### 2. Her signature
 The whole logo depends on this.
-- Sign **"Jennifer Mazer"** on unlined white paper, black felt-tip or brush pen
+- Sign **"Jenifer Mazer"** on unlined white paper, black felt-tip or brush pen
 - Write it **large** — fill a landscape sheet
 - Do it 2–3 times so we can pick the best one
 - Photograph straight-on in daylight, no shadow across the paper
@@ -68,7 +68,7 @@ inks, and signed/numbered limited editions. **Those are industry-standard claims
 wrote as a template, not facts about her process.** They're promises to buyers.
 Confirm or correct every one before launch.
 
-### 9. A studio photo of Jennifer
+### 9. A studio photo of Jenifer
 Her headshot is in and works. A shot of her actually painting would do more —
 buyers connect with process.
 
@@ -87,8 +87,8 @@ most work on the page right now.
 ## 🟢 Setup tasks (I can do these, need accounts)
 
 ### 12. Domain
-Check `jennifermazer.com` now, before anything gets printed on a business card.
-If it's taken, `jennifermazerart.com` or `jennifermazerstudio.com`.
+Check `jenifermazer.com` now, before anything gets printed on a business card.
+If it's taken, `jenifermazerart.com` or `jenifermazerstudio.com`.
 
 ### 13. Stripe account
 She creates it at stripe.com — I can't and shouldn't set up an account or handle

@@ -43,7 +43,7 @@ export const artworks: Artwork[] = [
   {
     slug: 'bloom',
     title: 'Bloom',
-    image: 'bloom-lips-cherry-blossoms-jennifer-mazer.jpg',
+    image: 'bloom-lips-cherry-blossoms-jenifer-mazer.jpg',
     alt: 'Painting of bold red lips biting a green leaf, surrounded by pink and white cherry blossoms on a black background',
     medium: 'Acrylic on canvas',
     dimensions: '', // TODO
@@ -60,7 +60,7 @@ export const artworks: Artwork[] = [
   {
     slug: 'citrus-grove',
     title: 'Citrus Grove',
-    image: 'citrus-grove-lemons-oranges-jennifer-mazer.jpg',
+    image: 'citrus-grove-lemons-oranges-jenifer-mazer.jpg',
     alt: 'Acrylic painting of lemons, oranges, and white orange blossoms scattered across a deep navy background',
     medium: 'Acrylic on canvas',
     dimensions: '', // TODO
@@ -77,7 +77,7 @@ export const artworks: Artwork[] = [
   {
     slug: 'koi-pond',
     title: 'Koi Pond',
-    image: 'koi-pond-water-lilies-jennifer-mazer.jpg',
+    image: 'koi-pond-water-lilies-jenifer-mazer.jpg',
     alt: 'Painting of two koi fish, one orange and one red and white, swimming among green lily pads and white water lilies on deep blue water',
     medium: 'Acrylic on paper',
     dimensions: '', // TODO
@@ -94,7 +94,7 @@ export const artworks: Artwork[] = [
   {
     slug: 'three-lemons-on-navy',
     title: 'Three Lemons on Navy',
-    image: 'three-lemons-on-navy-jennifer-mazer.jpg',
+    image: 'three-lemons-on-navy-jenifer-mazer.jpg',
     alt: 'Acrylic painting of three bright yellow lemons with green leaves on a navy blue canvas',
     medium: 'Acrylic on canvas',
     dimensions: '', // TODO
@@ -111,7 +111,7 @@ export const artworks: Artwork[] = [
   {
     slug: 'autumn-pumpkin',
     title: 'Autumn Pumpkin',
-    image: 'autumn-pumpkin-sunflower-jennifer-mazer.jpg',
+    image: 'autumn-pumpkin-sunflower-jenifer-mazer.jpg',
     alt: 'Painting of an orange pumpkin framed by a yellow sunflower, white blossoms, blue berries, and a lavender magnolia on a warm tan canvas',
     medium: 'Acrylic on canvas',
     dimensions: '', // TODO
@@ -135,8 +135,8 @@ export const featuredArtworks = artworks.filter((a) => a.featured);
  * most common thing a hesitant buyer wants to see before committing.
  */
 export const roomShot = {
-  image: 'citrus-triptych-on-wall-jennifer-mazer.jpg',
-  alt: 'Three of Jennifer Mazer\'s navy citrus paintings hung together on a wall — two small canvases of oranges and lemons above a large citrus pattern canvas',
+  image: 'citrus-triptych-on-wall-jenifer-mazer.jpg',
+  alt: 'Three of Jenifer Mazer\'s navy citrus paintings hung together on a wall — two small canvases of oranges and lemons above a large citrus pattern canvas',
 };
 
 export function formatPrice(price: number | null, currency = 'USD'): string {

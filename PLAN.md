@@ -1,4 +1,4 @@
-# Jennifer Mazer — Artist Website Plan
+# Jenifer Mazer — Artist Website Plan
 
 **Goal:** Get a fast, SEO-strong art studio landing page live ASAP, with the ability to
 sell originals and prints directly via Stripe Checkout.
@@ -6,7 +6,7 @@ sell originals and prints directly via Stripe Checkout.
 **Stack:** Astro (static) → deploys free to Netlify or Vercel. No server, no database,
 sub-1s loads, perfect Lighthouse SEO out of the box.
 
-**Logo:** Jennifer's signature, "Jennifer Mazer", as an inline SVG.
+**Logo:** Jenifer's signature, "Jenifer Mazer", as an inline SVG.
 
 ---
 
@@ -50,7 +50,7 @@ Currently an SVG placeholder built from bezier paths at
 `src/components/Signature.astro`.
 
 **To use her real signature (strongly recommended — it's her mark, not mine):**
-1. She signs "Jennifer Mazer" on unlined white paper with a black felt-tip or brush pen.
+1. She signs "Jenifer Mazer" on unlined white paper with a black felt-tip or brush pen.
    Big — fill a landscape sheet. Two or three attempts.
 2. Photograph or scan it straight-on in even daylight.
 3. Send it over. I'll vectorize it to a clean SVG path and drop it in — the swap is
@@ -116,7 +116,7 @@ See `CONTENT-CHECKLIST.md`. Short version: images, prices, bio, and her signatur
 
 1. `npm install && npm run build` — verify clean build
 2. Push to GitHub → connect to Netlify (free tier is plenty)
-3. Point her domain (`jennifermazer.com` or similar — check availability now,
+3. Point her domain (`jenifermazer.com` or similar — check availability now,
    before anything is printed)
 4. Submit sitemap to Google Search Console
 5. Set up Google Analytics or Plausible

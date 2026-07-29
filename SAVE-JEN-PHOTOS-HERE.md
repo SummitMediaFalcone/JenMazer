@@ -3,7 +3,7 @@
 Everything goes under:
 
 ```
-C:\Users\Richard\Desktop\Summit Work space\jennifer-mazer-art\public\images\
+C:\Users\Richard\Desktop\Summit Work space\jenifer-mazer-art\public\images\
 ```
 
 The folders are already created. **Use these exact filenames** — the code is
@@ -16,11 +16,11 @@ written to look for them, so once they're in place it just works.
 The selfie by the water. Save as:
 
 ```
-jennifer-mazer-headshot.jpg
+jenifer-mazer-headshot.jpg
 ```
 
 Full path:
-`...\jennifer-mazer-art\public\images\jennifer-mazer-headshot.jpg`
+`...\jenifer-mazer-art\public\images\jenifer-mazer-headshot.jpg`
 
 ---
 
@@ -28,9 +28,9 @@ Full path:
 
 | The photo | Save it as |
 |---|---|
-| Red lips with pink cherry blossoms on black | `lips-cherry-blossoms-jennifer-mazer.jpg` |
-| Lemons + oranges + white blossoms on navy | `citrus-grove-lemons-oranges-jennifer-mazer.jpg` |
-| Three lemons on navy, close up | `three-lemons-on-navy-jennifer-mazer.jpg` |
+| Red lips with pink cherry blossoms on black | `lips-cherry-blossoms-jenifer-mazer.jpg` |
+| Lemons + oranges + white blossoms on navy | `citrus-grove-lemons-oranges-jenifer-mazer.jpg` |
+| Three lemons on navy, close up | `three-lemons-on-navy-jenifer-mazer.jpg` |
 
 The lips painting is set up to be the hero image on the main page — it's the
 strongest of the three and it'll be the first thing anyone sees.
@@ -41,16 +41,16 @@ strongest of the three and it'll be the first thing anyone sees.
 
 | The photo | Save it as |
 |---|---|
-| Cannoli + cream puffs on the white platter | `pastries-cannoli-cream-puffs-jennifer-mazer.jpg` |
-| Cupcakes with blue center (gender reveal) | `cupcakes-gender-reveal-jennifer-mazer.jpg` |
-| Chocolate cupcakes, gold + pink sprinkles | `cupcakes-gold-sprinkles-jennifer-mazer.jpg` |
+| Cannoli + cream puffs on the white platter | `pastries-cannoli-cream-puffs-jenifer-mazer.jpg` |
+| Cupcakes with blue center (gender reveal) | `cupcakes-gender-reveal-jenifer-mazer.jpg` |
+| Chocolate cupcakes, gold + pink sprinkles | `cupcakes-gold-sprinkles-jenifer-mazer.jpg` |
 
 ---
 
 ## 4. Banners → `public\images\banners\`
 
 Empty for now. Whenever you get photos of her banners, drop them here with
-descriptive names like `birthday-banner-jennifer-mazer.jpg`. Those are the
+descriptive names like `birthday-banner-jenifer-mazer.jpg`. Those are the
 photos most likely to book party work, so they're worth chasing.
 
 ---

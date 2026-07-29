@@ -1,13 +1,13 @@
 /**
- * Event inquiry handler — sends the lead to Jennifer via Resend.
+ * Event inquiry handler — sends the lead to Jenifer via Resend.
  *
  * This is written and ready. To turn it on:
  *
  *   1. npm install resend
  *   2. In Netlify → Site settings → Environment variables, add:
  *        RESEND_API_KEY   (from resend.com/api-keys)
- *        INQUIRY_TO       jennifer's email
- *        INQUIRY_FROM     e.g. "Jennifer Mazer <inquiries@jennifermazer.com>"
+ *        INQUIRY_TO       jenifer's email
+ *        INQUIRY_FROM     e.g. "Jenifer Mazer <inquiries@jenifermazer.com>"
  *                         The domain must be verified in Resend first.
  *   3. In src/components/EventInquiry.astro set:
  *        const ENDPOINT = '/.netlify/functions/event-inquiry'
