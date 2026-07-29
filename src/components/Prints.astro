@@ -1,4 +1,6 @@
 ---
+import { roomShot } from '../data/artworks';
+
 /*
  * The prints / buyer-reassurance section.
  *
@@ -61,6 +63,19 @@
         </p>
       </article>
     </div>
+
+    <figure class="room">
+      <img
+        src={`/images/art/${roomShot.image}`}
+        alt={roomShot.alt}
+        loading="lazy"
+        decoding="async"
+      />
+      <figcaption>
+        Grouped on a wall — the two small citrus canvases hung above
+        <em>Citrus Grove</em>. Pieces are designed to work alone or as a set.
+      </figcaption>
+    </figure>
   </div>
 </section>
 
@@ -90,4 +105,27 @@
     font-size: var(--step--1);
     color: var(--text-muted);
   }
+
+  .room {
+    margin: clamp(2.5rem, 6vw, 4rem) 0 0;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .room img {
+    width: 100%;
+    max-height: 60vh;
+    object-fit: cover;
+    object-position: center 35%;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .room figcaption {
+    font-size: var(--step--1);
+    color: var(--text-muted);
+    max-width: 60ch;
+  }
+
+  .room em { color: var(--text); font-style: italic; }
 </style>

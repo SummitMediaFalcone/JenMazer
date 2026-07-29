@@ -9,12 +9,16 @@
 // 60–150 words per piece, in Jenn's voice. What it's made of, what inspired it,
 // where it belongs in a home. Nobody else writes these, which is exactly why
 // they rank.
+//
+// NOTE: the descriptions below are drafts written from the photographs. They
+// describe what's visibly there and nothing more — no invented backstory. They
+// should still be replaced with Jenn's own words before launch.
 // ---------------------------------------------------------------------------
 
 export type Artwork = {
   slug: string;
   title: string;
-  /** Filename inside /public/images/art/ — use descriptive names, not IMG_1234. */
+  /** Filename inside /public/images/art/ */
   image: string;
   /** Describes the image for screen readers AND Google Images. Be literal. */
   alt: string;
@@ -24,12 +28,11 @@ export type Artwork = {
   year: number | null;
   price: number | null;
   currency: 'USD';
-  /** 'original' | 'print' | 'commission' */
   kind: 'original' | 'print' | 'commission';
   /** Stripe Payment Link. Empty string renders an "Inquire" button instead. */
   stripeLink: string;
   soldOut: boolean;
-  /** Shows the piece in the homepage hero collage. Pick 3–5. */
+  /** Shows the piece in the homepage hero collage. Pick 3. */
   featured: boolean;
   description: string;
   /** Freeform tags — drive related-work links and long-tail keywords. */
@@ -40,8 +43,7 @@ export const artworks: Artwork[] = [
   {
     slug: 'bloom',
     title: 'Bloom',
-    // TODO: replace with 'lips-cherry-blossoms-jennifer-mazer.jpg'
-    image: 'lips-blossoms-placeholder.svg',
+    image: 'bloom-lips-cherry-blossoms-jennifer-mazer.jpg',
     alt: 'Painting of bold red lips biting a green leaf, surrounded by pink and white cherry blossoms on a black background',
     medium: 'Acrylic on canvas',
     dimensions: '', // TODO
@@ -52,36 +54,14 @@ export const artworks: Artwork[] = [
     stripeLink: '', // TODO
     soldOut: false,
     featured: true,
-    // TODO — replace with Jenn's own words.
-    description: `Red lips caught mid-bite on a green leaf, ringed by pink and white cherry blossoms against black. The contrast is the whole piece — the lips saturated and glossy, the blossoms painted petal by petal in soft washes with speckled centers, all of it floating on a ground so dark the flowers seem lit from inside. It's the boldest thing in the collection and it reads from across a room. Works where a room needs a focal point rather than a soft note.`,
+    description: `Red lips caught mid-bite on a green leaf, ringed by pink and white cherry blossoms against near-black. The contrast is the whole piece — the lips saturated and glossy, the blossoms painted petal by petal in soft washes with speckled centers and yellow-green stamens. Every flower is worked individually rather than repeated, so the cluster reads as a real branch rather than a pattern. It's the boldest thing in the collection and it holds a wall from across a room. Suited to a space that wants one strong focal point instead of a soft note.`,
     tags: ['lips', 'cherry blossom', 'floral', 'bold', 'black', 'statement piece', 'pop art'],
   },
   {
-    slug: 'citrus-grove-lemons-and-oranges',
+    slug: 'citrus-grove',
     title: 'Citrus Grove',
-    // TODO: replace with the real photo, named descriptively for Google Images:
-    // 'citrus-grove-lemons-oranges-jennifer-mazer.jpg'
-    image: 'citrus-grove-placeholder.svg',
+    image: 'citrus-grove-lemons-oranges-jennifer-mazer.jpg',
     alt: 'Acrylic painting of lemons, oranges, and white orange blossoms scattered across a deep navy background',
-    medium: 'Acrylic on canvas',
-    dimensions: '', // TODO
-    year: null, // TODO
-    price: null, // TODO
-    currency: 'USD',
-    kind: 'original',
-    stripeLink: '', // TODO — Stripe Payment Link
-    soldOut: false,
-    featured: true,
-    // TODO — replace with Jenn's own words. This is a starting draft only.
-    description: `A dense Mediterranean citrus pattern painted in acrylic on canvas. Meyer lemons, blood oranges, and white orange blossoms drift across a deep navy ground, each fruit built up in layers so the peel catches light the way real citrus does. The palette is drawn from an Amalfi Coast garden at dusk — the moment the sky goes indigo and the fruit stays lit. It brings warmth to a kitchen, a dining room, or any wall that needs a shot of color without shouting.`,
-    tags: ['citrus', 'lemons', 'oranges', 'mediterranean', 'kitchen art', 'navy', 'botanical'],
-  },
-  {
-    slug: 'three-lemons-on-navy',
-    title: 'Three Lemons on Navy',
-    // TODO: replace with 'three-lemons-on-navy-jennifer-mazer.jpg'
-    image: 'three-lemons-placeholder.svg',
-    alt: 'Acrylic painting of three bright yellow lemons with green leaves on a navy blue canvas',
     medium: 'Acrylic on canvas',
     dimensions: '', // TODO
     year: null, // TODO
@@ -91,15 +71,73 @@ export const artworks: Artwork[] = [
     stripeLink: '', // TODO
     soldOut: false,
     featured: true,
-    // TODO — replace with Jenn's own words.
-    description: `Three lemons, painted large and close, glowing against deep navy. The simplicity is the point — no horizon, no table, just fruit and leaf and color. Built in translucent acrylic layers so the yellow reads warm at the center and cools toward the rind, with the canvas weave left visible through the ground. Small enough to sit on a shelf or a kitchen counter, bold enough to hold a wall on its own.`,
+    description: `A dense Mediterranean citrus pattern in acrylic on canvas. Lemons, oranges, and white orange blossoms drift edge to edge across a deep navy ground, each fruit built in layers so the peel catches light and the rind reads dimpled and real. The blossoms are painted individually — five petals, green sepals, yellow centers — and the olive leaves are angled so nothing repeats. Because the pattern runs off every edge, it reads as a fragment of something larger. Brings warmth to a kitchen or dining room without needing anything else on the wall.`,
+    tags: ['citrus', 'lemons', 'oranges', 'mediterranean', 'kitchen art', 'navy', 'botanical', 'pattern'],
+  },
+  {
+    slug: 'koi-pond',
+    title: 'Koi Pond',
+    image: 'koi-pond-water-lilies-jennifer-mazer.jpg',
+    alt: 'Painting of two koi fish, one orange and one red and white, swimming among green lily pads and white water lilies on deep blue water',
+    medium: 'Acrylic on paper',
+    dimensions: '', // TODO
+    year: null, // TODO
+    price: null, // TODO
+    currency: 'USD',
+    kind: 'original',
+    stripeLink: '', // TODO
+    soldOut: false,
+    featured: true,
+    description: `Two koi turning through deep blue water — one solid orange, one red and white — among lily pads and open white water lilies. The water is built in layered blues that darken toward the stones at the bottom, so the fish read as suspended rather than floating flat. Fins are painted in fine pale strokes that catch light against the dark ground, and each lily centre is worked in yellow filaments. Quieter than the citrus work and cooler in palette. Suits a bedroom, an office, or anywhere that wants calm rather than punch.`,
+    tags: ['koi', 'fish', 'water lily', 'pond', 'blue', 'calm', 'nature', 'japanese'],
+  },
+  {
+    slug: 'three-lemons-on-navy',
+    title: 'Three Lemons on Navy',
+    image: 'three-lemons-on-navy-jennifer-mazer.jpg',
+    alt: 'Acrylic painting of three bright yellow lemons with green leaves on a navy blue canvas',
+    medium: 'Acrylic on canvas',
+    dimensions: '', // TODO
+    year: null, // TODO
+    price: null, // TODO
+    currency: 'USD',
+    kind: 'original',
+    stripeLink: '', // TODO
+    soldOut: false,
+    featured: false,
+    description: `Three lemons painted large and close, glowing against deep navy. The simplicity is the point — no horizon, no table, just fruit and leaf and colour. Built in translucent acrylic layers so the yellow reads warm at the centre and cools toward the rind, with dimpled peel texture picked out in fine dots and the canvas weave left visible through the ground. Small enough for a shelf or a kitchen counter, bold enough to hold a wall on its own. Reads as a companion piece to Citrus Grove.`,
     tags: ['lemons', 'still life', 'kitchen art', 'navy', 'botanical', 'small original'],
   },
-
-  // ---- Add more pieces below. Copy the block above and edit. ----
+  {
+    slug: 'autumn-pumpkin',
+    title: 'Autumn Pumpkin',
+    image: 'autumn-pumpkin-sunflower-jennifer-mazer.jpg',
+    alt: 'Painting of an orange pumpkin framed by a yellow sunflower, white blossoms, blue berries, and a lavender magnolia on a warm tan canvas',
+    medium: 'Acrylic on canvas',
+    dimensions: '', // TODO
+    year: null, // TODO
+    price: null, // TODO
+    currency: 'USD',
+    kind: 'original',
+    stripeLink: '', // TODO
+    soldOut: false,
+    featured: false,
+    description: `An orange pumpkin on a warm tan ground, framed by a sunflower, a lavender magnolia, trailing white blossoms and clusters of dark blue berries. The tan ground is the departure here — where the citrus work uses navy for contrast, this one sits in warm neutrals, which makes it easier to place in a room that already has a lot going on. Ribbing on the pumpkin is picked out in fine white and deeper orange lines. A seasonal piece that doesn't have to come down in November.`,
+    tags: ['pumpkin', 'sunflower', 'autumn', 'fall decor', 'floral', 'seasonal', 'neutral'],
+  },
 ];
 
 export const featuredArtworks = artworks.filter((a) => a.featured);
+
+/**
+ * Installation shot of the citrus pieces hung together. Not a separate work —
+ * it's the "what does it look like on a real wall" image, which is the single
+ * most common thing a hesitant buyer wants to see before committing.
+ */
+export const roomShot = {
+  image: 'citrus-triptych-on-wall-jennifer-mazer.jpg',
+  alt: 'Three of Jennifer Mazer\'s navy citrus paintings hung together on a wall — two small canvases of oranges and lemons above a large citrus pattern canvas',
+};
 
 export function formatPrice(price: number | null, currency = 'USD'): string {
   if (price === null) return 'Price on request';

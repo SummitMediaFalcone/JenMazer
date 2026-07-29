@@ -61,6 +61,7 @@ export const nav = [
   { label: 'Art', href: '/#art' },
   { label: 'Prints', href: '/#prints' },
   { label: 'Parties & Events', href: '/#parties' },
+  { label: 'Gallery', href: '/#gallery' },
   { label: 'About', href: '/#about' },
   { label: 'Plan an Event', href: '/party-inquiry' },
 ];

@@ -1,0 +1,109 @@
+---
+import { gallery } from '../data/services';
+
+/*
+ * The portfolio wall.
+ *
+ * Photos of real work book events better than any amount of copy. This is a
+ * masonry-ish grid so the portrait and landscape shots can sit together without
+ * being cropped into uniformity — cropping a cookie tray to a square throws
+ * away the part that shows the range.
+ */
+---
+
+<section id="gallery" class="section">
+  <div class="wrap">
+    <p class="eyebrow">Past Work</p>
+    <h2>Some of what she's made.</h2>
+    <p class="lede">
+      Every one of these was designed for a specific family and a specific day.
+      Nothing here is a stock order.
+    </p>
+
+    <ul class="grid">
+      {gallery.map((item, i) => (
+        <li class="tile">
+          <figure>
+            <img
+              src={`/images/${item.dir}/${item.image}`}
+              alt={item.alt}
+              loading={i < 4 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+            <figcaption>
+              <span class="cat">{item.category}</span>
+              <span class="cap">{item.caption}</span>
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .grid {
+    list-style: none;
+    margin: clamp(2.5rem, 6vw, 3.5rem) 0 0;
+    padding: 0;
+    columns: 4 250px;
+    column-gap: clamp(0.85rem, 1.8vw, 1.35rem);
+  }
+
+  .tile {
+    break-inside: avoid;
+    margin-bottom: clamp(0.85rem, 1.8vw, 1.35rem);
+  }
+
+  figure {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--cream-deep);
+    box-shadow: var(--shadow);
+  }
+
+  figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.2, 0, 0.2, 1);
+  }
+
+  figure:hover img { transform: scale(1.05); }
+
+  figcaption {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: grid;
+    gap: 0.15rem;
+    padding: 2.5rem 0.9rem 0.85rem;
+    color: #fff;
+    background: linear-gradient(to top, rgba(13, 15, 38, 0.88), transparent);
+    opacity: 0;
+    transition: opacity 0.28s ease;
+  }
+
+  figure:hover figcaption,
+  figure:focus-within figcaption { opacity: 1; }
+
+  .cat {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lemon);
+  }
+
+  .cap {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    line-height: 1.2;
+  }
+
+  /* Touch devices can't hover, so the caption stays visible there. */
+  @media (hover: none) {
+    figcaption { opacity: 1; }
+  }
+</style>
