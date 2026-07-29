@@ -1,42 +1,60 @@
 ---
 import Base from '../layouts/Base.astro';
-import EventInquiry from '../components/EventInquiry.astro';
+import PartyQuiz from '../components/PartyQuiz.astro';
 import { site } from '../data/site';
 
 /*
- * Standalone version of the lead form.
+ * Standalone version of the lead box.
  *
- * Worth having as its own URL: it's the link that goes in her Instagram bio,
- * on a business card, or at the end of an ad. Sending someone to a page that
- * is only the form converts better than dropping them at the top of the
- * homepage and hoping they scroll.
+ * Worth its own URL: it's the link for her Instagram bio, a business card, or
+ * the end of an ad. Sending someone to a page that is only the lead box
+ * converts better than dropping them at the top of the homepage and hoping.
  */
 
 const where = site.location.city
   ? `${site.location.city}, ${site.location.state}`
   : 'your area';
 
-const title = 'Plan Your Event — Jennifer Mazer';
-const description = `Tell Jennifer Mazer about your birthday, baby shower, or wedding. Custom banners, dessert tables, pastries, and full party design in ${where}.`;
+const title = 'Plan Your Party — Jennifer Mazer';
+const description = `Tell Jen Mazer about your birthday, baby shower, or wedding. Hand-painted banners, custom cookies and pastries, dessert tables and full party design in ${where}.`;
 ---
 
 <Base {title} {description}>
-  <section class="section intro">
-    <div class="wrap">
-      <p class="eyebrow">Parties &amp; Events</p>
-      <h1>Let's plan it.</h1>
-      <p class="lede">
-        Birthdays, baby showers, weddings, holidays. Hand-painted banners,
-        dessert tables, custom pastries, and styling that all matches because
-        one person designed it. Fill this out and Jen will come back with
-        what's possible and what it costs.
-      </p>
+  <section class="section page">
+    <div class="wrap page__inner">
+      <div class="page__copy">
+        <p class="eyebrow">Parties &amp; Events</p>
+        <h1>Let's plan it.</h1>
+        <p class="lede">
+          Birthdays, baby showers, weddings, holidays. Hand-painted banners,
+          dessert tables, custom pastries, and styling that all matches because
+          one person designed it.
+        </p>
+        <p>
+          Four taps and your email. Jen reads every one herself and usually
+          replies within a day or two.
+        </p>
+      </div>
+
+      <div class="page__quiz">
+        <PartyQuiz />
+      </div>
     </div>
   </section>
-
-  <EventInquiry compact />
 </Base>
 
 <style>
-  .intro { padding-block: clamp(3rem, 8vw, 5rem) clamp(1rem, 2vw, 2rem); }
+  .page { padding-block: clamp(2.5rem, 7vw, 5rem); }
+
+  .page__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .page__inner { grid-template-columns: 1fr; }
+    .page__quiz { order: -1; }
+  }
 </style>

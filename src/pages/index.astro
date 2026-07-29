@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Services from '../components/Services.astro';
 import PartyGallery from '../components/PartyGallery.astro';
-import EventInquiry from '../components/EventInquiry.astro';
+import PartyQuiz from '../components/PartyQuiz.astro';
 import ArtFeature from '../components/ArtFeature.astro';
 import About from '../components/About.astro';
 import Contact from '../components/Contact.astro';
@@ -70,8 +70,39 @@ const description =
   <Hero />
   <Services />
   <PartyGallery />
-  <EventInquiry />
+
+  {/* Second shot at the lead, right after they've scrolled the photos. */}
+  <section id="event-inquiry" class="section section--alt">
+    <div class="wrap band">
+      <div class="band__copy">
+        <p class="eyebrow">Start Here</p>
+        <h2>Tell Jen about your party.</h2>
+        <p class="lede">
+          Four taps — what you're celebrating, how many people, when, and
+          roughly what you want to spend. She'll come back with what's possible.
+          No obligation on the other side of it.
+        </p>
+      </div>
+      <div class="band__quiz">
+        <PartyQuiz />
+      </div>
+    </div>
+  </section>
+
   <ArtFeature />
   <About />
   <Contact />
 </Base>
+
+<style>
+  .band {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .band { grid-template-columns: 1fr; }
+  }
+</style>

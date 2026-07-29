@@ -1,21 +1,42 @@
 ---
 import Signature from './Signature.astro';
+import PartyQuiz from './PartyQuiz.astro';
 
 /*
- * Parties lead here, not the art. That's where the money is, so it gets the
- * headline, the first CTA, and three of the four images.
+ * Copy on the left, lead box on the right.
  *
- * Jen's photo sits in the collage rather than being buried in the About
- * section. Party work is bought from a person, not a brand — a client is
- * handing someone their kid's birthday. Seeing her face this early does real
- * work on conversion.
+ * The quiz is the primary conversion path on the whole site — it sits above
+ * the fold, next to the pitch, and asks for an email only after four taps.
+ *
+ * A thin strip of real work sits under the copy so the hero isn't all text.
+ * Jen's face is in the quiz header, where it does the most good: people are
+ * about to hand her their kid's birthday.
  */
+
+const strip = [
+  {
+    src: '/images/parties/unicorn-rainbow-sugar-cookies-jennifer-mazer.jpg',
+    alt: 'Trays of pastel rainbow, cloud and unicorn sugar cookies on a styled party table',
+  },
+  {
+    src: '/images/banners/twinkle-twinkle-little-star-baby-shower-banner-jennifer-mazer.jpg',
+    alt: 'Hand-painted twinkle twinkle little star baby shower banner with clouds and gold stars',
+  },
+  {
+    src: '/images/parties/cannoli-cream-puffs-dessert-platter-jennifer-mazer.jpg',
+    alt: 'Platter of filled cannoli and powdered-sugar cream puffs',
+  },
+  {
+    src: '/images/parties/flamingo-sugar-cookies-jennifer-mazer.jpg',
+    alt: 'Tray of coral pink flamingo-shaped iced sugar cookies',
+  },
+];
 ---
 
 <section class="hero">
   <div class="wrap hero__inner">
     <div class="hero__copy">
-      <Signature height="4.5rem" color="var(--navy)" class="hero__sig" />
+      <Signature height="4.5rem" color="var(--navy)" class="hero__sig" flourish />
 
       <h1 class="hero__headline">
         Parties worth <em>remembering</em>, made by hand.
@@ -28,51 +49,26 @@ import Signature from './Signature.astro';
         pieces from four different stores.
       </p>
 
-      <div class="hero__actions">
-        <a href="/party-inquiry" class="btn btn--primary">Plan Your Party</a>
-        <a href="#gallery" class="btn btn--ghost">See Her Work</a>
-      </div>
+      <ul class="strip">
+        {strip.map((s, i) => (
+          <li>
+            <img
+              src={s.src}
+              alt={s.alt}
+              loading={i < 2 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          </li>
+        ))}
+      </ul>
 
       <p class="hero__note">
         She also paints. <a href="#art">Hand-painted originals →</a>
       </p>
     </div>
 
-    <div class="hero__collage">
-      <figure class="hero__fig hero__fig--lead">
-        <img
-          src="/images/parties/unicorn-rainbow-sugar-cookies-jennifer-mazer.jpg"
-          alt="Iridescent trays of pastel rainbow and cloud sugar cookies above pink, blue and purple unicorn head cookies with gold horns"
-          width="1800"
-          height="1350"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-        />
-      </figure>
-
-      <figure class="hero__fig hero__fig--jen">
-        <img
-          src="/images/jennifer-mazer-headshot.jpg"
-          alt="Jen Mazer, artist and party designer, smiling outdoors on a sunny day"
-          width="768"
-          height="1024"
-          loading="eager"
-          decoding="async"
-        />
-        <figcaption>Jen</figcaption>
-      </figure>
-
-      <figure class="hero__fig">
-        <img
-          src="/images/banners/twinkle-twinkle-little-star-baby-shower-banner-jennifer-mazer.jpg"
-          alt="Hand-painted kraft paper banner reading twinkle twinkle little star, how we wonder what you are, with painted clouds, rainbows and gold stars"
-          width="1024"
-          height="768"
-          loading="eager"
-          decoding="async"
-        />
-      </figure>
+    <div class="hero__lead">
+      <PartyQuiz compact />
     </div>
   </div>
 </section>
@@ -80,7 +76,7 @@ import Signature from './Signature.astro';
 <style>
   .hero {
     position: relative;
-    padding-block: clamp(2.5rem, 7vw, 5rem) clamp(3rem, 8vw, 6rem);
+    padding-block: clamp(2.25rem, 6vw, 4.5rem) clamp(3rem, 8vw, 5.5rem);
     overflow: hidden;
   }
 
@@ -90,36 +86,56 @@ import Signature from './Signature.astro';
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(50rem 30rem at 82% 12%, rgba(255, 210, 30, 0.18), transparent 65%),
-      radial-gradient(38rem 26rem at 10% 78%, rgba(244, 97, 26, 0.13), transparent 62%);
+      radial-gradient(50rem 30rem at 82% 10%, rgba(255, 210, 30, 0.2), transparent 65%),
+      radial-gradient(38rem 26rem at 8% 80%, rgba(244, 97, 26, 0.14), transparent 62%);
     pointer-events: none;
   }
 
   .hero__inner {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-    gap: clamp(2rem, 6vw, 4.5rem);
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(2rem, 5vw, 4rem);
     align-items: center;
   }
 
-  .hero__sig { margin-bottom: 1.5rem; }
+  .hero__sig { margin-bottom: 1.4rem; }
   @media (prefers-color-scheme: dark) {
     .hero__sig { color: var(--lemon) !important; }
   }
 
-  .hero__headline { margin-bottom: 1.25rem; }
+  .hero__headline { margin-bottom: 1.15rem; }
   .hero__headline em { font-style: italic; color: var(--orange); }
 
-  .hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem;
-    margin-top: 2rem;
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.55rem;
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0;
+    max-width: 30rem;
   }
 
+  .strip li {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 4px;
+    background: var(--cream-deep);
+    box-shadow: var(--shadow);
+  }
+
+  .strip img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .strip li:hover img { transform: scale(1.08); }
+
   .hero__note {
-    margin: 1.5rem 0 0;
+    margin: 1.35rem 0 0;
     font-size: var(--step--1);
     color: var(--text-muted);
   }
@@ -132,69 +148,12 @@ import Signature from './Signature.astro';
   }
   .hero__note a:hover { text-decoration: underline; }
 
-  .hero__collage {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    grid-template-areas:
-      'lead jen'
-      'lead banner';
-    gap: clamp(0.7rem, 1.5vw, 1.1rem);
-  }
+  .hero__lead { align-self: center; }
 
-  .hero__fig {
-    margin: 0;
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--radius);
-    background: var(--cream-deep);
-    box-shadow: var(--shadow);
-  }
-
-  .hero__fig img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .hero__fig--lead {
-    grid-area: lead;
-    aspect-ratio: 3 / 4;
-  }
-
-  .hero__fig--jen {
-    grid-area: jen;
-    aspect-ratio: 1 / 1;
-  }
-  /* Her face sits high in the frame; bias the crop upward. */
-  .hero__fig--jen img { object-position: center 22%; }
-
-  .hero__fig--jen figcaption {
-    position: absolute;
-    left: 0.65rem;
-    bottom: 0.5rem;
-    font-family: var(--font-script);
-    font-size: 2rem;
-    line-height: 1;
-    color: #fff;
-    text-shadow: 0 1px 8px rgba(13, 15, 38, 0.7);
-  }
-
-  .hero__collage .hero__fig:last-child {
-    grid-area: banner;
-    aspect-ratio: 4 / 3;
-  }
-
-  @media (max-width: 900px) {
+  @media (max-width: 940px) {
     .hero__inner { grid-template-columns: 1fr; }
-  }
-
-  @media (max-width: 520px) {
-    .hero__collage {
-      grid-template-columns: 1fr 1fr;
-      grid-template-areas:
-        'lead lead'
-        'jen  banner';
-    }
-    .hero__fig--lead { aspect-ratio: 4 / 3; }
+    /* Lead box first on mobile — it's the conversion, the copy can wait. */
+    .hero__lead { order: -1; }
+    .strip { max-width: none; }
   }
 </style>

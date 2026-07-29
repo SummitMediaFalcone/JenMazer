@@ -1,0 +1,520 @@
+---
+import { site } from '../data/site';
+import { eventTypes, guestCounts, budgetRanges } from '../data/eventForm';
+
+/*
+ * The lead box. Four taps and an email address.
+ *
+ * Every step is a click, not a text field — people abandon typing but they'll
+ * happily tap. Choosing auto-advances, so the whole thing is four taps before
+ * anyone is asked for contact details. Asking for the email LAST is the point:
+ * by then they've invested four clicks and are far more likely to finish.
+ *
+ * Jen's photo sits at the top on purpose. Party work is bought from a person.
+ *
+ * Sends via the same Netlify Function + Resend handler as before. Until
+ * ENDPOINT is set it falls back to a prefilled email so nothing is silently
+ * dropped — see netlify/functions/event-inquiry.js.
+ */
+const ENDPOINT = ''; // Set to '/.netlify/functions/event-inquiry' once keyed
+
+const dateOptions = ['Within 1 month', '1–3 months', '3–6 months', '6+ months', 'Not sure yet'];
+
+interface Props {
+  /** Hero version is more compact than the standalone-page version. */
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+---
+
+<div class="quiz" class:list={[compact && 'quiz--compact']} data-endpoint={ENDPOINT} data-email={site.email}>
+  <div class="quiz__head">
+    <img
+      class="quiz__avatar"
+      src="/images/jennifer-mazer-headshot.jpg"
+      alt="Jen Mazer"
+      width="96"
+      height="96"
+      loading="eager"
+      decoding="async"
+    />
+    <div>
+      <p class="quiz__title">Planning something?</p>
+      <p class="quiz__sub">Four quick taps and Jen will get back to you.</p>
+    </div>
+  </div>
+
+  <div class="quiz__bar" role="progressbar" aria-label="Progress" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1">
+    <span class="quiz__fill" style="width:20%"></span>
+  </div>
+
+  <form class="quiz__form" method="POST" action={ENDPOINT || undefined} novalidate>
+    {/* --- 1. Event type --- */}
+    <fieldset class="step" data-step="1">
+      <legend>What are you celebrating?</legend>
+      <div class="opts">
+        {eventTypes.map((t) => (
+          <button type="button" class="opt" data-field="eventType" data-value={t}>{t}</button>
+        ))}
+      </div>
+    </fieldset>
+
+    {/* --- 2. Guest count --- */}
+    <fieldset class="step" data-step="2" hidden>
+      <legend>Roughly how many people?</legend>
+      <div class="opts opts--tight">
+        {guestCounts.map((g) => (
+          <button type="button" class="opt" data-field="guestCount" data-value={g}>{g}</button>
+        ))}
+      </div>
+    </fieldset>
+
+    {/* --- 3. Date --- */}
+    <fieldset class="step" data-step="3" hidden>
+      <legend>When is it?</legend>
+      <label class="datefield">
+        <span>Pick a date</span>
+        <input type="date" name="eventDate" />
+      </label>
+      <p class="or">or roughly…</p>
+      <div class="opts opts--tight">
+        {dateOptions.map((d) => (
+          <button type="button" class="opt" data-field="dateRange" data-value={d}>{d}</button>
+        ))}
+      </div>
+    </fieldset>
+
+    {/* --- 4. Budget --- */}
+    <fieldset class="step" data-step="4" hidden>
+      <legend>What's your budget?</legend>
+      <div class="opts opts--tight">
+        {budgetRanges.map((b) => (
+          <button type="button" class="opt" data-field="budget" data-value={b}>{b}</button>
+        ))}
+      </div>
+      <p class="hint">A range is plenty — it just helps her answer properly.</p>
+    </fieldset>
+
+    {/* --- 5. Contact --- */}
+    <fieldset class="step" data-step="5" hidden>
+      <legend>Where should Jen send it?</legend>
+      <div class="fields">
+        <label class="field">
+          <span>Your name</span>
+          <input type="text" name="name" autocomplete="name" required />
+        </label>
+        <label class="field">
+          <span>Email</span>
+          <input type="email" name="email" autocomplete="email" required />
+        </label>
+        <label class="field">
+          <span>Phone <em>(optional)</em></span>
+          <input type="tel" name="phone" autocomplete="tel" />
+        </label>
+        <label class="field">
+          <span>Anything else? <em>(optional)</em></span>
+          <textarea name="message" rows="2" placeholder="Theme, colors, who it's for…"></textarea>
+        </label>
+      </div>
+
+      <p class="err" role="alert" hidden></p>
+      <button type="submit" class="btn btn--primary quiz__submit">Send to Jen</button>
+      <p class="hint">Goes straight to her. No list, no spam.</p>
+    </fieldset>
+
+    {/* --- Done --- */}
+    <div class="step done" data-step="6" hidden>
+      <p class="done__mark" aria-hidden="true">✓</p>
+      <p class="done__title">Sent.</p>
+      <p class="done__sub">Jen reads every one herself and usually replies within a day or two.</p>
+    </div>
+
+    {/* Hidden mirrors of the tapped choices, so a normal POST carries them. */}
+    <input type="hidden" name="eventType" />
+    <input type="hidden" name="guestCount" />
+    <input type="hidden" name="dateRange" />
+    <input type="hidden" name="budget" />
+    {/* Honeypot */}
+    <input type="text" name="_company" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  </form>
+
+  <div class="quiz__foot">
+    <button type="button" class="back" hidden>← Back</button>
+    <span class="count">Step 1 of 5</span>
+  </div>
+</div>
+
+<style>
+  .quiz {
+    display: grid;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--orange);
+    border-radius: 6px;
+    box-shadow: var(--shadow-lift);
+    overflow: hidden;
+  }
+
+  .quiz__head {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1.15rem 1.35rem 1rem;
+  }
+
+  .quiz__avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 20%;
+    flex-shrink: 0;
+    border: 2px solid var(--lemon);
+  }
+
+  .quiz__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    line-height: 1.15;
+  }
+
+  .quiz__sub {
+    margin: 0.15rem 0 0;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+  }
+
+  .quiz__bar {
+    height: 3px;
+    background: var(--border);
+  }
+
+  .quiz__fill {
+    display: block;
+    height: 100%;
+    background: var(--orange);
+    transition: width 0.35s cubic-bezier(0.3, 0, 0.2, 1);
+  }
+
+  .quiz__form { padding: 1.35rem; }
+
+  fieldset.step,
+  div.step {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  legend {
+    padding: 0;
+    margin-bottom: 0.9rem;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    line-height: 1.2;
+    color: var(--text);
+  }
+
+  .opts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));
+    gap: 0.5rem;
+  }
+
+  .opts--tight {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 128px), 1fr));
+  }
+
+  .opt {
+    padding: 0.72rem 0.7rem;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 500;
+    line-height: 1.25;
+    text-align: left;
+    color: var(--text);
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  .opt:hover {
+    border-color: var(--orange);
+    transform: translateY(-1px);
+  }
+
+  .opt[data-selected='true'] {
+    border-color: var(--orange);
+    background: color-mix(in srgb, var(--orange) 12%, var(--bg));
+  }
+
+  .datefield {
+    display: grid;
+    gap: 0.35rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .datefield span,
+  .field span {
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+
+  .field em {
+    font-style: normal;
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+
+  .datefield input,
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--text);
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .field textarea { resize: vertical; }
+
+  .datefield input:focus-visible,
+  .field input:focus-visible,
+  .field textarea:focus-visible { border-color: var(--orange); }
+
+  .or {
+    margin: 0 0 0.7rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .fields {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .field { display: grid; gap: 0.3rem; }
+
+  .quiz__submit { width: 100%; }
+
+  .hint {
+    margin: 0.7rem 0 0;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .err {
+    margin: 0 0 0.7rem;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.84rem;
+    color: #a3200c;
+    background: rgba(244, 97, 26, 0.12);
+    border-left: 3px solid var(--orange);
+    border-radius: 3px;
+  }
+
+  .done {
+    display: grid;
+    gap: 0.3rem;
+    justify-items: center;
+    text-align: center;
+    padding: 1.5rem 0;
+  }
+
+  .done__mark {
+    margin: 0;
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    font-size: 1.6rem;
+    color: var(--navy-deep);
+    background: var(--lemon);
+    border-radius: 50%;
+  }
+
+  .done__title {
+    margin: 0.5rem 0 0;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+  }
+
+  .done__sub {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    max-width: 34ch;
+  }
+
+  .quiz__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 1.35rem;
+    border-top: 1px solid var(--border);
+    background: var(--bg-alt);
+  }
+
+  .back {
+    padding: 0;
+    font-family: inherit;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  .back:hover { color: var(--orange); }
+
+  .count {
+    margin-left: auto;
+    font-size: 0.76rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Standalone-page version can breathe a little more. */
+  .quiz:not(.quiz--compact) .quiz__form { padding: 1.75rem; }
+  .quiz:not(.quiz--compact) legend { font-size: 1.5rem; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.quiz').forEach((quiz) => {
+    const form = quiz.querySelector<HTMLFormElement>('.quiz__form')!;
+    const steps = Array.from(quiz.querySelectorAll<HTMLElement>('.step'));
+    const fill = quiz.querySelector<HTMLElement>('.quiz__fill')!;
+    const bar = quiz.querySelector<HTMLElement>('.quiz__bar')!;
+    const back = quiz.querySelector<HTMLButtonElement>('.back')!;
+    const count = quiz.querySelector<HTMLElement>('.count')!;
+    const err = quiz.querySelector<HTMLElement>('.err')!;
+    const endpoint = quiz.dataset.endpoint || '';
+    const fallbackEmail = quiz.dataset.email || '';
+
+    const LAST_QUESTION = 5; // step 6 is the confirmation
+    let current = 1;
+
+    function show(n: number) {
+      current = n;
+      steps.forEach((s) => {
+        s.hidden = Number(s.dataset.step) !== n;
+      });
+
+      const pct = Math.min(100, (n / LAST_QUESTION) * 100);
+      fill.style.width = `${pct}%`;
+      bar.setAttribute('aria-valuenow', String(Math.min(n, LAST_QUESTION)));
+
+      back.hidden = n === 1 || n > LAST_QUESTION;
+      count.textContent = n > LAST_QUESTION ? 'Done' : `Step ${n} of ${LAST_QUESTION}`;
+
+      // Move focus to the new question so keyboard and screen-reader users
+      // aren't stranded at the bottom of the card.
+      const legend = steps[n - 1]?.querySelector('legend, .done__title');
+      if (legend instanceof HTMLElement) {
+        legend.setAttribute('tabindex', '-1');
+        legend.focus({ preventScroll: true });
+      }
+    }
+
+    // Tapping an option records it and moves on. No Next button needed.
+    quiz.querySelectorAll<HTMLButtonElement>('.opt').forEach((opt) => {
+      opt.addEventListener('click', () => {
+        const field = opt.dataset.field!;
+        const value = opt.dataset.value!;
+
+        const group = opt.closest('.opts')!;
+        group.querySelectorAll<HTMLElement>('.opt').forEach((o) =>
+          o.removeAttribute('data-selected')
+        );
+        opt.dataset.selected = 'true';
+
+        const hidden = form.querySelector<HTMLInputElement>(`input[type="hidden"][name="${field}"]`);
+        if (hidden) hidden.value = value;
+
+        // Picking a rough timeframe clears any exact date, and vice versa.
+        if (field === 'dateRange') {
+          const d = form.querySelector<HTMLInputElement>('input[name="eventDate"]');
+          if (d) d.value = '';
+        }
+
+        window.setTimeout(() => show(Math.min(current + 1, LAST_QUESTION)), 180);
+      });
+    });
+
+    // Choosing an exact date clears the rough-timeframe pick and advances.
+    const dateInput = form.querySelector<HTMLInputElement>('input[name="eventDate"]');
+    dateInput?.addEventListener('change', () => {
+      if (!dateInput.value) return;
+      const rangeField = form.querySelector<HTMLInputElement>('input[name="dateRange"]');
+      if (rangeField) rangeField.value = '';
+      quiz
+        .querySelectorAll<HTMLElement>('.opt[data-field="dateRange"]')
+        .forEach((o) => o.removeAttribute('data-selected'));
+      window.setTimeout(() => show(4), 180);
+    });
+
+    back.addEventListener('click', () => show(Math.max(1, current - 1)));
+
+    const LABELS: Record<string, string> = {
+      name: 'Name',
+      email: 'Email',
+      phone: 'Phone',
+      eventType: 'Event type',
+      guestCount: 'Guest count',
+      eventDate: 'Event date',
+      dateRange: 'Timeframe',
+      budget: 'Budget',
+      message: 'Notes',
+    };
+
+    form.addEventListener('submit', (event) => {
+      const data = new FormData(form);
+      if (data.get('_company')) {
+        event.preventDefault();
+        return;
+      }
+
+      const name = String(data.get('name') || '').trim();
+      const email = String(data.get('email') || '').trim();
+
+      if (!name || !email || !email.includes('@')) {
+        event.preventDefault();
+        err.textContent = 'Please add your name and a valid email so Jen can reply.';
+        err.hidden = false;
+        return;
+      }
+      err.hidden = true;
+
+      // With a real endpoint, let the browser POST it normally.
+      if (endpoint) return;
+
+      // Otherwise compose a prefilled email rather than silently dropping it.
+      event.preventDefault();
+      const lines = Object.entries(LABELS)
+        .map(([key, label]) => [label, String(data.get(key) ?? '').trim()])
+        .filter(([, value]) => value !== '')
+        .map(([label, value]) => `${label}: ${value}`);
+
+      const subject = `Party inquiry — ${data.get('eventType') || 'New event'}`;
+      window.location.href =
+        `mailto:${fallbackEmail}` +
+        `?subject=${encodeURIComponent(subject)}` +
+        `&body=${encodeURIComponent(lines.join('\n'))}`;
+
+      show(LAST_QUESTION + 1);
+    });
+
+    show(1);
+  });
+</script>

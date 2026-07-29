@@ -1,30 +1,34 @@
 ---
+import { site } from '../data/site';
+
 /*
- * THE LOGO — Jen's signature.
+ * THE LOGO — her signature.
  *
- * Right now this renders "Jennifer Mazer" in a script face as a stand-in. It
- * looks good and it ships today, but it is not actually her handwriting, and
- * her real signature is the whole point of the request.
+ * STILL A PLACEHOLDER. This renders her name in a script face and styles it to
+ * sit like a signature (slight tilt, tightened letterfit, a hand-drawn
+ * underline). It looks like a signature. It is not HER signature, and that was
+ * the whole point of the original request.
  *
  * TO SWAP IN THE REAL ONE:
  *   1. She signs her name large on unlined white paper, black felt-tip or
  *      brush pen. Two or three tries.
  *   2. Photograph it straight-on in daylight.
- *   3. Send it to me — I'll vectorize it and replace the block marked
+ *   3. Send it over — I'll vectorize it and replace the block marked
  *      REAL SIGNATURE below with the traced <path>.
  *
- * Nothing else in the codebase needs to change. Every usage — header, footer,
- * favicon, artwork watermark, social share image — points at this one file.
+ * Nothing else needs to change. Every usage — header, footer, hero, favicon,
+ * social share image — points at this one file.
  */
 
 interface Props {
   /** Rendered height in CSS units. */
   height?: string;
-  /** Color; defaults to inheriting from the parent. */
   color?: string;
   class?: string;
-  /** Set false when the signature sits next to visible text saying the name. */
+  /** Set false when visible text next to it already says the name. */
   labelled?: boolean;
+  /** The hand-drawn underline. Off for small marks like the header. */
+  flourish?: boolean;
 }
 
 const {
@@ -32,14 +36,15 @@ const {
   color = 'currentColor',
   class: className = '',
   labelled = true,
+  flourish = false,
 } = Astro.props;
 ---
 
 <span
-  class:list={['signature', className]}
+  class:list={['signature', flourish && 'signature--flourish', className]}
   style={`--sig-height:${height};--sig-color:${color};`}
   role={labelled ? 'img' : undefined}
-  aria-label={labelled ? 'Jennifer Mazer' : undefined}
+  aria-label={labelled ? site.name : undefined}
   aria-hidden={labelled ? undefined : 'true'}
 >
   {/*
@@ -51,32 +56,59 @@ const {
             stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   */}
-  <span class="signature__text" aria-hidden="true">Jennifer Mazer</span>
+  <span class="signature__text" aria-hidden="true">{site.name}</span>
+
+  {flourish && (
+    <svg class="signature__rule" viewBox="0 0 300 12" preserveAspectRatio="none" aria-hidden="true">
+      {/* Deliberately uneven — a ruler-straight line reads as a border, not a pen stroke. */}
+      <path
+        d="M2 8C40 3 78 9 118 6s72-5 108-1 60 5 70 2"
+        fill="none"
+        stroke="var(--sig-color)"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+    </svg>
+  )}
 </span>
 
 <style>
   .signature {
     display: inline-flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     color: var(--sig-color);
     line-height: 1;
   }
 
-  .signature svg {
+  .signature svg:not(.signature__rule) {
     height: var(--sig-height);
     width: auto;
   }
 
-  /* The placeholder wordmark. Sized so its cap-height roughly matches what a
-     traced signature would occupy, which keeps the header from shifting when
-     the real one drops in. */
+  /* The placeholder wordmark, styled to sit like a signature rather than like
+     a heading set in a script font. Sized so its cap-height roughly matches
+     what a traced signature would occupy, which keeps the header from shifting
+     when the real one drops in. */
   .signature__text {
     font-family: var(--font-script);
-    font-size: calc(var(--sig-height) * 1.55);
-    line-height: 0.78;
+    font-size: calc(var(--sig-height) * 1.6);
+    line-height: 0.76;
     white-space: nowrap;
-    letter-spacing: 0.01em;
+    letter-spacing: -0.005em;
     /* Italianno sits high in its em box; nudge it onto the baseline. */
-    transform: translateY(0.06em);
+    transform: translateY(0.05em) rotate(-1.6deg);
+    transform-origin: left center;
+  }
+
+  .signature__rule {
+    width: calc(var(--sig-height) * 4.6);
+    height: calc(var(--sig-height) * 0.2);
+    margin-top: calc(var(--sig-height) * 0.06);
+    margin-left: calc(var(--sig-height) * 0.14);
+    opacity: 0.55;
+    transform: rotate(-1.6deg);
+    transform-origin: left center;
+    overflow: visible;
   }
 </style>
