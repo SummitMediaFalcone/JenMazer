@@ -1,0 +1,182 @@
+---
+import { artworks, roomShot, formatPrice } from '../data/artworks';
+
+/*
+ * The art section, deliberately small.
+ *
+ * Parties are the revenue, so the homepage leads with them. Art gets one strong
+ * piece — Bloom, the lips and cherry blossoms — plus a link through to the rest.
+ *
+ * The other paintings keep their own /art/<slug> pages. They cost nothing to
+ * leave up and each one is an indexable page carrying Product schema, so
+ * pulling them off the homepage costs no SEO at all.
+ */
+
+const feature = artworks.find((a) => a.slug === 'bloom') ?? artworks[0];
+const others = artworks.filter((a) => a.slug !== feature.slug);
+---
+
+<section id="art" class="section section--alt">
+  <div class="wrap">
+    <p class="eyebrow">Hand-Painted Originals</p>
+    <h2>She paints, too.</h2>
+
+    <div class="feature">
+      <a href={`/art/${feature.slug}`} class="feature__frame">
+        <img
+          src={`/images/art/${feature.image}`}
+          alt={feature.alt}
+          width="768"
+          height="1024"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+
+      <div class="feature__body">
+        <h3>{feature.title}</h3>
+        <p class="feature__meta">
+          {feature.medium}{feature.dimensions && <> · {feature.dimensions}</>}
+        </p>
+
+        <p class="feature__desc">{feature.description}</p>
+
+        <p class="feature__by">Hand painted by Jen</p>
+
+        <p class="feature__price">
+          {feature.soldOut ? 'Sold' : formatPrice(feature.price, feature.currency)}
+        </p>
+
+        <div class="feature__actions">
+          <a href={`/art/${feature.slug}`} class="btn btn--primary">
+            {feature.stripeLink && !feature.soldOut ? 'Buy This Piece' : 'Inquire About This Piece'}
+          </a>
+        </div>
+
+        {others.length > 0 && (
+          <p class="feature__more">
+            {others.length} more {others.length === 1 ? 'painting' : 'paintings'} —
+            {others.map((a, i) => (
+              <>
+                {i > 0 && ','} <a href={`/art/${a.slug}`}>{a.title}</a>
+              </>
+            ))}
+          </p>
+        )}
+      </div>
+    </div>
+
+    <figure class="room">
+      <img
+        src={`/images/art/${roomShot.image}`}
+        alt={roomShot.alt}
+        loading="lazy"
+        decoding="async"
+      />
+      <figcaption>
+        Her citrus canvases hung as a group. Pieces are made to work alone or
+        as a set.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .feature {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+
+  .feature__frame {
+    display: block;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--cream-deep);
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .feature__frame:hover {
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-4px);
+  }
+
+  .feature__frame img { width: 100%; height: auto; }
+
+  .feature__body h3 {
+    font-size: var(--step-2);
+    margin-bottom: 0.25rem;
+  }
+
+  .feature__meta {
+    margin: 0 0 1.25rem;
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+
+  .feature__desc { margin-bottom: 1.25rem; }
+
+  /* The detail he asked to keep. Set in the same script face as the logo so it
+     reads as her mark rather than as body copy. */
+  .feature__by {
+    font-family: var(--font-script);
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--orange);
+    margin: 0 0 1rem;
+  }
+
+  .feature__price {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    color: var(--text);
+    margin-bottom: 1.25rem;
+  }
+
+  .feature__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  .feature__more {
+    margin: 1.75rem 0 0;
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+
+  .feature__more a {
+    color: var(--orange);
+    text-decoration: none;
+  }
+  .feature__more a:hover { text-decoration: underline; }
+
+  .room {
+    margin: clamp(2.5rem, 6vw, 4rem) 0 0;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .room img {
+    width: 100%;
+    max-height: 55vh;
+    object-fit: cover;
+    object-position: center 35%;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .room figcaption {
+    font-size: var(--step--1);
+    color: var(--text-muted);
+    max-width: 60ch;
+  }
+
+  @media (max-width: 860px) {
+    .feature { grid-template-columns: 1fr; }
+    .feature__frame { max-width: 460px; }
+  }
+</style>

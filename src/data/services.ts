@@ -20,7 +20,7 @@ export type Service = {
   imageDir: 'parties' | 'banners';
   alt: string;
   includes: string[];
-  /** e.g. 'From $85' — buyers self-qualify, which saves Jenn dead inquiries. */
+  /** e.g. 'From $85' — buyers self-qualify, which saves Jen dead inquiries. */
   startingAt: string;
   /** Long-tail phrases this service should rank for. */
   keywords: string[];

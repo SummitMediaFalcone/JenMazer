@@ -1,4 +1,4 @@
-# What I Need From Jenn
+# What I Need From Jen
 
 Photos are all in and wired up — 5 paintings, a banner, and 21 party/dessert
 photos across the gallery. Everything below is what's still missing.

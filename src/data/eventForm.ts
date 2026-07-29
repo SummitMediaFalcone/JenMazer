@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
 // EVENT INQUIRY FORM — field options
 //
-// Kept out of the component so Jenn can change what she offers without anyone
+// Kept out of the component so Jen can change what she offers without anyone
 // touching markup. Every option here also lands in the email she receives.
 //
 // The two fields that matter most are guest count and budget. They're what

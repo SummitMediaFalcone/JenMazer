@@ -1,22 +1,28 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
-import ArtworkCard from '../components/ArtworkCard.astro';
-import Prints from '../components/Prints.astro';
 import Services from '../components/Services.astro';
 import PartyGallery from '../components/PartyGallery.astro';
-import About from '../components/About.astro';
 import EventInquiry from '../components/EventInquiry.astro';
+import ArtFeature from '../components/ArtFeature.astro';
+import About from '../components/About.astro';
 import Contact from '../components/Contact.astro';
-import { artworks } from '../data/artworks';
 import { site } from '../data/site';
 import { services } from '../data/services';
 
+/*
+ * Page order is deliberate and follows the money.
+ *
+ * Parties first: services, then proof (the gallery), then the lead form while
+ * they're still looking at the photos. Art sits after the form as a single
+ * feature — it's a real part of what she does, but it isn't what pays.
+ */
+
 const hasLocation = Boolean(site.location.city && site.location.state);
 
-// LocalBusiness schema — this is what makes the party/event side eligible for
-// the Google map pack. It only fires once a city is set, because a
-// LocalBusiness with no address is worse than none at all.
+// LocalBusiness schema — this is what makes the party side eligible for the
+// Google map pack. It only fires once a city is set, because a LocalBusiness
+// with no address is worse than none at all.
 const localBusinessSchema = hasLocation
   ? [
       {
@@ -55,56 +61,17 @@ const localBusinessSchema = hasLocation
     ]
   : [];
 
-const title = 'Jennifer Mazer — Original Art, Custom Banners & Party Design';
+const title = 'Jennifer Mazer — Party Design, Custom Banners & Hand-Painted Art';
 const description =
-  'Original acrylic paintings and archival prints by artist Jennifer Mazer, plus hand-painted custom banners, baby showers, and full party design.';
+  'Baby showers, birthdays and holidays designed start to finish — hand-painted banners, custom cookies, cakes and pastries, and full party styling. Plus original paintings by Jen Mazer.';
 ---
 
 <Base {title} {description} schema={localBusinessSchema}>
   <Hero />
-
-  <section id="art" class="section">
-    <div class="wrap">
-      <p class="eyebrow">Original Work</p>
-      <h2>Paintings &amp; prints</h2>
-      <p class="lede">
-        Acrylic on canvas, painted by hand. Originals are one of one; prints are
-        made to last on archival cotton paper.
-      </p>
-
-      {artworks.length > 0 ? (
-        <div class="grid">
-          {artworks.map((artwork, i) => (
-            <ArtworkCard {artwork} priority={i < 3} />
-          ))}
-        </div>
-      ) : (
-        <p class="empty">
-          Artwork is being photographed — check back shortly, or
-          <a href="#contact">get in touch</a> to ask what's available now.
-        </p>
-      )}
-    </div>
-  </section>
-
-  <Prints />
   <Services />
   <PartyGallery />
   <EventInquiry />
+  <ArtFeature />
   <About />
   <Contact />
 </Base>
-
-<style>
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-    gap: clamp(1.5rem, 3.5vw, 2.75rem);
-    margin-top: clamp(2.5rem, 6vw, 3.5rem);
-  }
-
-  .empty {
-    margin-top: 2rem;
-    color: var(--text-muted);
-  }
-</style>

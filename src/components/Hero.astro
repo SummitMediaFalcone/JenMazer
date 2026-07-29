@@ -1,9 +1,15 @@
 ---
 import Signature from './Signature.astro';
-import { featuredArtworks } from '../data/artworks';
 
-const hero = featuredArtworks[0];
-const secondary = featuredArtworks.slice(1, 3);
+/*
+ * Parties lead here, not the art. That's where the money is, so it gets the
+ * headline, the first CTA, and three of the four images.
+ *
+ * Jen's photo sits in the collage rather than being buried in the About
+ * section. Party work is bought from a person, not a brand — a client is
+ * handing someone their kid's birthday. Seeing her face this early does real
+ * work on conversion.
+ */
 ---
 
 <section class="hero">
@@ -12,47 +18,61 @@ const secondary = featuredArtworks.slice(1, 3);
       <Signature height="4.5rem" color="var(--navy)" class="hero__sig" />
 
       <h1 class="hero__headline">
-        Paintings that bring <em>color</em> to a room, and parties nobody forgets.
+        Parties worth <em>remembering</em>, made by hand.
       </h1>
 
       <p class="lede">
-        Original acrylic paintings and prints, hand-painted custom banners, and
-        full party design — baby showers, birthdays, and holidays styled down to
-        the pastries. All of it made by hand, one at a time.
+        Baby showers, birthdays, and holidays designed start to finish — the
+        hand-painted banner, the dessert table, the cookies and cannoli, and the
+        styling that ties it together. One person, one idea, no mismatched
+        pieces from four different stores.
       </p>
 
       <div class="hero__actions">
-        <a href="#art" class="btn btn--primary">See the Artwork</a>
-        <a href="#event-inquiry" class="btn btn--ghost">Plan an Event</a>
+        <a href="/party-inquiry" class="btn btn--primary">Plan Your Party</a>
+        <a href="#gallery" class="btn btn--ghost">See Her Work</a>
       </div>
+
+      <p class="hero__note">
+        She also paints. <a href="#art">Hand-painted originals →</a>
+      </p>
     </div>
 
-    <div class="hero__gallery">
-      {hero && (
-        <figure class="hero__figure hero__figure--main">
-          <img
-            src={`/images/art/${hero.image}`}
-            alt={hero.alt}
-            width="900"
-            height="1200"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
-        </figure>
-      )}
-      {secondary.map((art) => (
-        <figure class="hero__figure">
-          <img
-            src={`/images/art/${art.image}`}
-            alt={art.alt}
-            width="600"
-            height="800"
-            loading="eager"
-            decoding="async"
-          />
-        </figure>
-      ))}
+    <div class="hero__collage">
+      <figure class="hero__fig hero__fig--lead">
+        <img
+          src="/images/parties/unicorn-rainbow-sugar-cookies-jennifer-mazer.jpg"
+          alt="Iridescent trays of pastel rainbow and cloud sugar cookies above pink, blue and purple unicorn head cookies with gold horns"
+          width="1800"
+          height="1350"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </figure>
+
+      <figure class="hero__fig hero__fig--jen">
+        <img
+          src="/images/jennifer-mazer-headshot.jpg"
+          alt="Jen Mazer, artist and party designer, smiling outdoors on a sunny day"
+          width="768"
+          height="1024"
+          loading="eager"
+          decoding="async"
+        />
+        <figcaption>Jen</figcaption>
+      </figure>
+
+      <figure class="hero__fig">
+        <img
+          src="/images/banners/twinkle-twinkle-little-star-baby-shower-banner-jennifer-mazer.jpg"
+          alt="Hand-painted kraft paper banner reading twinkle twinkle little star, how we wonder what you are, with painted clouds, rainbows and gold stars"
+          width="1024"
+          height="768"
+          loading="eager"
+          decoding="async"
+        />
+      </figure>
     </div>
   </div>
 </section>
@@ -60,12 +80,11 @@ const secondary = featuredArtworks.slice(1, 3);
 <style>
   .hero {
     position: relative;
-    padding-block: clamp(2.5rem, 7vw, 5.5rem) clamp(3rem, 8vw, 6rem);
+    padding-block: clamp(2.5rem, 7vw, 5rem) clamp(3rem, 8vw, 6rem);
     overflow: hidden;
   }
 
-  /* A soft citrus wash behind the hero, echoing the canvases without
-     competing with them. */
+  /* Soft citrus wash behind the hero, echoing her canvases. */
   .hero::before {
     content: '';
     position: absolute;
@@ -84,21 +103,13 @@ const secondary = featuredArtworks.slice(1, 3);
     align-items: center;
   }
 
-  .hero__sig {
-    margin-bottom: 1.5rem;
-  }
+  .hero__sig { margin-bottom: 1.5rem; }
   @media (prefers-color-scheme: dark) {
     .hero__sig { color: var(--lemon) !important; }
   }
 
-  .hero__headline {
-    margin-bottom: 1.25rem;
-  }
-
-  .hero__headline em {
-    font-style: italic;
-    color: var(--orange);
-  }
+  .hero__headline { margin-bottom: 1.25rem; }
+  .hero__headline em { font-style: italic; color: var(--orange); }
 
   .hero__actions {
     display: flex;
@@ -107,43 +118,83 @@ const secondary = featuredArtworks.slice(1, 3);
     margin-top: 2rem;
   }
 
-  .hero__gallery {
-    display: grid;
-    grid-template-columns: 1.35fr 1fr;
-    grid-template-rows: auto auto;
-    gap: clamp(0.75rem, 1.6vw, 1.25rem);
+  .hero__note {
+    margin: 1.5rem 0 0;
+    font-size: var(--step--1);
+    color: var(--text-muted);
   }
 
-  .hero__figure {
+  .hero__note a {
+    color: var(--orange);
+    text-decoration: none;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .hero__note a:hover { text-decoration: underline; }
+
+  .hero__collage {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    grid-template-areas:
+      'lead jen'
+      'lead banner';
+    gap: clamp(0.7rem, 1.5vw, 1.1rem);
+  }
+
+  .hero__fig {
     margin: 0;
+    position: relative;
     overflow: hidden;
     border-radius: var(--radius);
     background: var(--cream-deep);
     box-shadow: var(--shadow);
   }
 
-  .hero__figure img {
+  .hero__fig img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .hero__figure--main {
-    grid-row: span 2;
+  .hero__fig--lead {
+    grid-area: lead;
     aspect-ratio: 3 / 4;
   }
 
-  .hero__gallery .hero__figure:not(.hero__figure--main) {
+  .hero__fig--jen {
+    grid-area: jen;
     aspect-ratio: 1 / 1;
+  }
+  /* Her face sits high in the frame; bias the crop upward. */
+  .hero__fig--jen img { object-position: center 22%; }
+
+  .hero__fig--jen figcaption {
+    position: absolute;
+    left: 0.65rem;
+    bottom: 0.5rem;
+    font-family: var(--font-script);
+    font-size: 2rem;
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 1px 8px rgba(13, 15, 38, 0.7);
+  }
+
+  .hero__collage .hero__fig:last-child {
+    grid-area: banner;
+    aspect-ratio: 4 / 3;
   }
 
   @media (max-width: 900px) {
     .hero__inner { grid-template-columns: 1fr; }
-    .hero__gallery { grid-template-columns: 1.35fr 1fr; }
   }
 
   @media (max-width: 520px) {
-    .hero__gallery { grid-template-columns: 1fr 1fr; }
-    .hero__figure--main { grid-column: span 2; grid-row: auto; aspect-ratio: 4 / 3; }
+    .hero__collage {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'lead lead'
+        'jen  banner';
+    }
+    .hero__fig--lead { aspect-ratio: 4 / 3; }
   }
 </style>

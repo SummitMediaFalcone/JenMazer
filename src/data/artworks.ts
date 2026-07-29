@@ -6,13 +6,13 @@
 // that lets Google show the price in search results.
 //
 // The `description` field is the highest-leverage SEO on the whole site.
-// 60–150 words per piece, in Jenn's voice. What it's made of, what inspired it,
+// 60–150 words per piece, in Jen's voice. What it's made of, what inspired it,
 // where it belongs in a home. Nobody else writes these, which is exactly why
 // they rank.
 //
 // NOTE: the descriptions below are drafts written from the photographs. They
 // describe what's visibly there and nothing more — no invented backstory. They
-// should still be replaced with Jenn's own words before launch.
+// should still be replaced with Jen's own words before launch.
 // ---------------------------------------------------------------------------
 
 export type Artwork = {

@@ -19,11 +19,12 @@ const FORMSPREE_ENDPOINT = ''; // TODO e.g. 'https://formspree.io/f/xxxxxxxx'
   <div class="wrap contact">
     <div class="contact__copy">
       <p class="eyebrow">Get in Touch</p>
-      <h2>Commission a piece, or plan a party.</h2>
+      <h2>Just have a quick question?</h2>
       <p>
-        Tell Jennifer what you have in mind — a painting for a specific wall, a
-        banner for a birthday, or a shower you want handled start to finish.
-        She reads every message herself and usually replies within a day or two.
+        Planning something? The <a href="/party-inquiry">event form</a> is
+        faster — it asks everything Jen needs so she can answer properly the
+        first time. For anything else, this reaches her directly. She reads
+        every message herself and usually replies within a day or two.
       </p>
 
       <ul class="contact__direct">
@@ -63,12 +64,12 @@ const FORMSPREE_ENDPOINT = ''; // TODO e.g. 'https://formspree.io/f/xxxxxxxx'
         <div class="field">
           <label for="topic">What's this about?</label>
           <select id="topic" name="topic">
-            <option>Buying a painting or print</option>
-            <option>Commissioning original art</option>
-            <option>Custom banner</option>
-            <option>Baby shower</option>
             <option>Party design &amp; planning</option>
+            <option>Baby shower or gender reveal</option>
+            <option>Custom banner</option>
             <option>Pastries &amp; party goods</option>
+            <option>Buying a painting</option>
+            <option>Commissioning original art</option>
             <option>Something else</option>
           </select>
         </div>
@@ -91,7 +92,7 @@ const FORMSPREE_ENDPOINT = ''; // TODO e.g. 'https://formspree.io/f/xxxxxxxx'
           launch. Until then, use the email link so nothing gets lost.
         </p>
         <a href={`mailto:${site.email}`} class="btn btn--primary">
-          Email Jennifer
+          Email Jen
         </a>
       </div>
     )}

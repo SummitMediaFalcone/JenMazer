@@ -79,7 +79,7 @@ Built in already:
 Needs real content to activate:
 - **Per-artwork copy.** Every piece needs 60–150 words: medium, dimensions, the
   story behind it, what inspired it, where it would hang. This is the single
-  highest-leverage SEO work on an art site and it can only come from Jenn.
+  highest-leverage SEO work on an art site and it can only come from Jen.
 - **A prints explainer.** Buyers search "archival giclée," "limited edition print,"
   "signed and numbered." Answering those questions ranks *and* closes sales.
 - **Google Business Profile** if she's open to local/studio traffic.
@@ -91,7 +91,7 @@ Needs real content to activate:
 You chose Stripe Checkout links. Correct call for launching fast:
 
 - No monthly fee. 2.9% + 30¢ per sale.
-- Jenn creates a Payment Link per piece in the Stripe dashboard — no code.
+- Jen creates a Payment Link per piece in the Stripe dashboard — no code.
 - Stripe hosts the checkout, handles cards/Apple Pay/Google Pay, tax, and receipts.
 - Shipping is collected at checkout (configure a flat rate per size tier).
 - Sold-out originals: she flips the link to inactive, and sets `soldOut: true`

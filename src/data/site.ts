@@ -5,12 +5,15 @@
 
 export const site = {
   name: 'Jennifer Mazer',
+  // She goes by Jen — one N. Used in body copy; the full name stays for the
+  // logo, the legal footer, and structured data.
+  firstName: 'Jen',
   // Shown under the signature in the header.
-  tagline: 'Original Art · Custom Banners · Party Design',
+  tagline: 'Party Design · Custom Banners · Hand-Painted Art',
 
   // Used in <title> and structured data.
   shortDescription:
-    'Original paintings, art prints, custom banners, and full party design by artist Jennifer Mazer.',
+    'Party design, hand-painted banners, custom cookies and pastries, and original paintings by Jen Mazer.',
 
   url: 'https://jennifermazer.com', // TODO: confirm domain
 
@@ -40,7 +43,7 @@ export const site = {
   },
 
   // --- Commerce -----------------------------------------------------------
-  // Stripe Payment Links. Jenn creates these in the Stripe dashboard (no code),
+  // Stripe Payment Links. Jen creates these in the Stripe dashboard (no code),
   // then pastes the URL into each artwork in artworks.ts.
   commerce: {
     provider: 'stripe' as const,
@@ -58,10 +61,8 @@ export const site = {
 
 // Navigation. Order here is the order rendered.
 export const nav = [
-  { label: 'Art', href: '/#art' },
-  { label: 'Prints', href: '/#prints' },
   { label: 'Parties & Events', href: '/#parties' },
   { label: 'Gallery', href: '/#gallery' },
+  { label: 'Art', href: '/#art' },
   { label: 'About', href: '/#about' },
-  { label: 'Plan an Event', href: '/party-inquiry' },
 ];

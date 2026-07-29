@@ -1,4 +1,4 @@
-# 📸 Where to save Jenn's photos
+# 📸 Where to save Jen's photos
 
 Everything goes under:
 

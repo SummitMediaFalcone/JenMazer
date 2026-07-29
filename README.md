@@ -42,7 +42,7 @@ structured data that puts the price in Google results.
   stripeLink: 'https://buy.stripe.com/...',  // '' renders an Inquire button
   soldOut: false,
   featured: true,                    // shows in the hero collage
-  description: '...',                // 60–150 words, in Jenn's voice
+  description: '...',                // 60–150 words, in Jen's voice
   tags: ['citrus', 'kitchen art'],
 }
 ```
@@ -64,7 +64,7 @@ from it.
 ## Docs
 
 - `PLAN.md` — the build plan and launch sequence
-- `CONTENT-CHECKLIST.md` — what's still needed from Jenn
+- `CONTENT-CHECKLIST.md` — what's still needed from Jen
 - `ART-INDUSTRY-RESEARCH.md` — what other working artists use, and why this is built this way
 
 ## Current state

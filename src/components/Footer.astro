@@ -26,10 +26,11 @@ const hasLocation = Boolean(site.location.city && site.location.state);
       <div>
         <h2>Explore</h2>
         <ul>
-          <li><a href="/#art">Original Art</a></li>
-          <li><a href="/#prints">Prints</a></li>
           <li><a href="/#parties">Parties &amp; Events</a></li>
-          <li><a href="/#about">About Jennifer</a></li>
+          <li><a href="/#gallery">Past Work</a></li>
+          <li><a href="/party-inquiry">Plan Your Party</a></li>
+          <li><a href="/#art">Hand-Painted Art</a></li>
+          <li><a href="/#about">About Jen</a></li>
         </ul>
       </div>
       <div>
@@ -37,7 +38,7 @@ const hasLocation = Boolean(site.location.city && site.location.state);
         <ul>
           <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
           {site.phone && <li><a href={`tel:${site.phone.replace(/[^\d+]/g, '')}`}>{site.phone}</a></li>}
-          <li><a href="/#contact">Commission a piece</a></li>
+          <li><a href="/party-inquiry">Tell her about your event</a></li>
         </ul>
       </div>
       {socials.length > 0 && (

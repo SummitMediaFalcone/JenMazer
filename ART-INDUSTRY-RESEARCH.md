@@ -18,17 +18,17 @@ The mistake most artists make is selling *only* on a marketplace. They rent an
 audience instead of owning one, hand over 30–40%, and if the platform changes its
 algorithm or terms their income disappears overnight.
 
-Jenn's site is the hub. Everything below is a spoke to add after launch.
+Jen's site is the hub. Everything below is a spoke to add after launch.
 
 ---
 
-## Marketplaces — the spokes, ranked for Jenn
+## Marketplaces — the spokes, ranked for Jen
 
 Her work is mixed illustration and prints, which changes the ranking. Fine-art-only
 galleries like Saatchi skew toward large original canvases; illustration and print
 work performs better on volume marketplaces.
 
-| Platform | Best for | Cut | Verdict for Jenn |
+| Platform | Best for | Cut | Verdict for Jen |
 |---|---|---|---|
 | **Etsy** | Prints, illustration, affordable art | ~6.5% + listing fees | **Start here.** 90M+ active buyers actively searching for art prints. The single best discovery channel for her category. |
 | **Fine Art America** | Print-on-demand, no inventory | Artist sets markup | **Strong second.** Uploads once, they print and ship canvas/framed/merch. Zero risk, pure upside. |
@@ -52,7 +52,7 @@ Here's the honest tradeoff:
 | Page speed | Moderate | Moderate | **Excellent** — static, no JS framework |
 | SEO control | Limited | Good | **Full** — custom JSON-LD, meta, sitemap |
 | Design ceiling | Template-bound | Theme-bound | **Unlimited** |
-| Jenn edits herself | Yes, easily | Yes | Needs you, or a CMS added later |
+| Jen edits herself | Yes, easily | Yes | Needs you, or a CMS added later |
 
 The tradeoff is real: she can't drag-and-drop her own edits. If that turns out to
 matter, a free headless CMS (Sanity, Decap) bolts on later and gives her a login
@@ -72,7 +72,7 @@ monthly fee before there's revenue.
 - Stripe: 2.9% + 30¢, no monthly cost, hosted checkout, Apple/Google Pay included.
 - Shopify: $29/mo before a single sale, but real inventory, cart, and shipping rules.
 
-At Jenn's stage Stripe is clearly correct. The migration point is roughly when she's
+At Jen's stage Stripe is clearly correct. The migration point is roughly when she's
 selling enough that manual link management gets annoying — call it 20+ active pieces
 or multi-item orders becoming common.
 
