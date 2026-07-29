@@ -1,6 +1,8 @@
 ---
 import Signature from './Signature.astro';
-import { nav } from '../data/site';
+import { nav, site } from '../data/site';
+
+const tel = site.phone.replace(/[^\d+]/g, '');
 ---
 
 <header class="header">
@@ -25,7 +27,21 @@ import { nav } from '../data/site';
           <li><a href={item.href}>{item.label}</a></li>
         ))}
       </ul>
-      <a href="/party-inquiry" class="btn btn--primary header__cta">Plan an Event</a>
+      {/* Phone before the form button. For local service work a call is the
+          highest-intent action there is, and people booking a party want to
+          talk to someone. */}
+      {site.phone && (
+        <a href={`tel:${tel}`} class="header__tel">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.24 11.4 11.4 0 003.6.58 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.6a1 1 0 01-.25 1z"
+              fill="currentColor"
+            />
+          </svg>
+          <span>{site.phone}</span>
+        </a>
+      )}
+      <a href="/pricing" class="btn btn--primary header__cta">Get a Price</a>
     </nav>
   </div>
 </header>
@@ -86,6 +102,21 @@ import { nav } from '../data/site';
 
   .header__nav ul a:hover { color: var(--orange); }
 
+  .header__tel {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: var(--step--1);
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--text);
+    white-space: nowrap;
+    transition: color 0.18s ease;
+  }
+
+  .header__tel svg { width: 1rem; height: 1rem; color: var(--orange); }
+  .header__tel:hover { color: var(--orange); }
+
   .header__toggle {
     display: none;
     flex-direction: column;
@@ -141,6 +172,12 @@ import { nav } from '../data/site';
 
     .header__nav ul a {
       display: block;
+      padding: 0.9rem 0;
+      font-size: var(--step-0);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header__tel {
       padding: 0.9rem 0;
       font-size: var(--step-0);
       border-bottom: 1px solid var(--border);

@@ -6,9 +6,19 @@ import sitemap from '@astrojs/sitemap';
 // so it must be correct before launch or SEO breaks silently.
 const SITE = 'https://jenifermazer.com';
 
+// Pages that carry <meta name="robots" content="noindex">. Listing a noindex
+// page in the sitemap sends Google two contradictory instructions, which is a
+// (minor) crawl-quality signal against the site.
+const NOINDEX = ['/thank-you'];
+
 export default defineConfig({
   site: SITE,
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) =>
+        !NOINDEX.some((path) => new URL(page).pathname.replace(/\/$/, '') === path),
+    }),
+  ],
   build: {
     inlineStylesheets: 'auto',
   },

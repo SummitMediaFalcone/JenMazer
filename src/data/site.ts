@@ -18,8 +18,8 @@ export const site = {
   url: 'https://jenifermazer.com', // TODO: confirm domain
 
   // --- Contact ------------------------------------------------------------
-  email: 'hello@jenifermazer.com', // TODO
-  phone: '', // TODO — optional, but strongly recommended for the party side
+  email: 'jenilana@live.com',
+  phone: '(954) 899-9621',
 
   // --- Location -----------------------------------------------------------
   // This is what powers the whole party side. Baby showers, banners, and
@@ -61,7 +61,9 @@ export const site = {
   // --- Social -------------------------------------------------------------
   // Leave a value empty to hide that icon. Instagram matters most for artists.
   social: {
-    instagram: '', // TODO e.g. 'https://instagram.com/jenifermazerart'
+    // utm_source=qr stripped — that param is for tracking a QR scan and has no
+    // business in a site-wide link. It also lands in the Person schema's sameAs.
+    instagram: 'https://www.instagram.com/jeniferilana',
     facebook: '',
     pinterest: '', // Genuinely valuable for party + baby shower discovery
     etsy: '',
@@ -88,7 +90,8 @@ export const site = {
 // Navigation. Order here is the order rendered.
 export const nav = [
   { label: 'Parties & Events', href: '/#parties' },
+  { label: 'Banners', href: '/hand-painted-banners' },
+  { label: 'Pricing', href: '/pricing' },
   { label: 'Gallery', href: '/#gallery' },
-  { label: 'Art', href: '/#art' },
   { label: 'About', href: '/#about' },
 ];

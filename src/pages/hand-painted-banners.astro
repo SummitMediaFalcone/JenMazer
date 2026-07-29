@@ -1,0 +1,290 @@
+---
+import Base from '../layouts/Base.astro';
+import PartyQuiz from '../components/PartyQuiz.astro';
+import { site } from '../data/site';
+
+/*
+ * The banner page.
+ *
+ * Per SEO-PLAN.md this is the fastest ranking win on the whole site: the
+ * search results for "hand painted party banner" are entirely Etsy sellers,
+ * with no local business competing at all. It also ships, so unlike the party
+ * pages it isn't capped by her drive radius.
+ *
+ * Deliberately answers the things Etsy listings make you dig for — turnaround,
+ * sizes, what's paintable, what it costs to ship. That's the ranking strategy:
+ * answer what everyone else dodges.
+ */
+
+const title = 'Hand-Painted Party Banners | Custom Signs, Shipped';
+const description =
+  'Custom hand-painted banners and party signs for showers, birthdays and reveals. Every one painted by hand. Local delivery in Palm Beach County or shipped.';
+
+const productSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Custom Hand-Painted Party Banners',
+    serviceType: 'Custom hand-painted banners and party signage',
+    provider: { '@id': `${site.url}/#person` },
+    areaServed: [
+      ...site.location.serviceArea.map((c) => ({ '@type': 'City', name: c })),
+      { '@type': 'Country', name: 'United States' },
+    ],
+    description:
+      'Hand-painted banners and signs for baby showers, gender reveals, birthdays and weddings. Custom lettering, colors and artwork, painted by hand one at a time.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'How long does a hand-painted banner take?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Most banners are painted and ready within a week or two, depending on size and how much lettering and artwork is involved. Message Jen with your date and she will tell you honestly whether it can be done in time.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What sizes do you make?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Anything from a small tabletop sign to a full backdrop several feet wide. Size is driven by where it is going to hang, so it helps to send a photo of the wall or table.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Do you ship banners outside Florida?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. Banners ship anywhere in the US, rolled and protected. In Palm Beach County Jen can hand deliver instead.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Can you match my colors or theme?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. Send a photo, a screenshot, or a link to whatever you have pinned. Every banner is painted from scratch, so the palette is set before anything is painted.',
+        },
+      },
+    ],
+  },
+];
+---
+
+<Base {title} {description} schema={productSchema} image="/images/banners/twinkle-twinkle-little-star-baby-shower-banner-jenifer-mazer.jpg">
+  <section class="section intro">
+    <div class="wrap intro__inner">
+      <div>
+        <p class="eyebrow">Hand-Painted Banners &amp; Signs</p>
+        <h1>Every one painted by hand.</h1>
+        <p class="lede">
+          Not printed, not a template, not a vinyl file someone else uploaded.
+          Jen paints the lettering and the artwork herself, for one family and
+          one occasion. Local delivery around West Palm Beach, or shipped
+          anywhere in the country.
+        </p>
+        <div class="intro__actions">
+          <a href="#quote" class="btn btn--primary">Get a Price</a>
+          <a href={`tel:${site.phone.replace(/[^\d+]/g, '')}`} class="btn btn--ghost">
+            Call {site.phone}
+          </a>
+        </div>
+      </div>
+
+      <figure class="intro__figure">
+        <img
+          src="/images/banners/twinkle-twinkle-little-star-baby-shower-banner-jenifer-mazer.jpg"
+          alt="Hand-painted kraft paper baby shower banner reading twinkle twinkle little star, how we wonder what you are, in pink and blue lettering with painted clouds, rainbows and gold stars"
+          width="1024"
+          height="768"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+        <figcaption>
+          A baby shower banner, painted start to finish — lettering, clouds,
+          rainbows and stars.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="wrap">
+      <h2>What she paints</h2>
+      <ul class="kinds">
+        <li><strong>Baby showers</strong><span>Names, nursery themes, nursery-rhyme lettering</span></li>
+        <li><strong>Gender reveals</strong><span>Signs that keep the secret until you want it out</span></li>
+        <li><strong>Birthdays</strong><span>First birthdays through milestone years</span></li>
+        <li><strong>Weddings &amp; showers</strong><span>Welcome signs, seating, bar and dessert signage</span></li>
+        <li><strong>Holidays</strong><span>Seasonal banners made to come back out next year</span></li>
+        <li><strong>Anything else</strong><span>Graduations, retirements, communions, homecomings</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>The questions people actually ask</h2>
+      <div class="faq">
+        <article>
+          <h3>How long does it take?</h3>
+          <p>
+            Most banners are painted and ready in a week or two, depending on
+            size and how much lettering and artwork is involved. Send Jen your
+            date and she'll tell you honestly whether it can be done in time —
+            she'd rather say no than rush something and hand you a banner she
+            isn't proud of.
+          </p>
+        </article>
+        <article>
+          <h3>What sizes can I get?</h3>
+          <p>
+            Anything from a small tabletop sign to a full backdrop several feet
+            wide. Size really depends on where it's going, so the most useful
+            thing you can send is a photo of the wall or table it'll hang on.
+          </p>
+        </article>
+        <article>
+          <h3>Can you match my colors?</h3>
+          <p>
+            Yes. Send a photo, a screenshot, or a link to whatever you've
+            pinned. Every banner is painted from scratch, so the palette gets
+            settled before any paint goes down.
+          </p>
+        </article>
+        <article>
+          <h3>Do you ship?</h3>
+          <p>
+            Yes — anywhere in the US, rolled and protected. Around Palm Beach
+            County, Jen can hand deliver instead, which is usually faster and
+            safer than shipping a large piece.
+          </p>
+        </article>
+        <article>
+          <h3>What does one cost?</h3>
+          <p>
+            It depends on size and how much hand-lettering and artwork is
+            involved — a small tabletop sign and a six-foot painted backdrop
+            aren't the same job. Tell Jen what you're picturing using the form
+            below and she'll come back with a real number, not a range designed
+            to move later.
+          </p>
+        </article>
+        <article>
+          <h3>Can I keep it afterwards?</h3>
+          <p>
+            That's rather the point. These aren't disposable — people frame the
+            small ones and bring the seasonal ones back out every year.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="quote" class="section section--alt">
+    <div class="wrap band">
+      <div>
+        <p class="eyebrow">Get a Price</p>
+        <h2>Tell Jen what you're picturing.</h2>
+        <p class="lede">
+          Four taps and your email. She'll come back with a real price for your
+          banner — size, wording, colors and all.
+        </p>
+        <p class="direct">
+          In a hurry? Call or text <a href={`tel:${site.phone.replace(/[^\d+]/g, '')}`}>{site.phone}</a>
+          or email <a href={`mailto:${site.email}`}>{site.email}</a>.
+        </p>
+      </div>
+      <div><PartyQuiz /></div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro { padding-block: clamp(2.5rem, 7vw, 4.5rem) clamp(2rem, 5vw, 3.5rem); }
+
+  .intro__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .intro__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+
+  .intro__figure {
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .intro__figure img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .intro__figure figcaption {
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+
+  .kinds {
+    list-style: none;
+    margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 1rem;
+  }
+
+  .kinds li {
+    display: grid;
+    gap: 0.2rem;
+    padding: 1rem 1.15rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--orange);
+    border-radius: var(--radius);
+  }
+
+  .kinds strong { font-size: var(--step-0); }
+  .kinds span { font-size: var(--step--1); color: var(--text-muted); }
+
+  .faq {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: clamp(1.25rem, 3vw, 2rem);
+    margin-top: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .faq h3 { font-size: var(--step-1); margin-bottom: 0.4rem; }
+  .faq p { margin: 0; color: var(--text-muted); font-size: var(--step--1); }
+
+  .band {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .direct { font-size: var(--step--1); color: var(--text-muted); }
+  .direct a { color: var(--orange); text-decoration: none; font-weight: 600; }
+  .direct a:hover { text-decoration: underline; }
+
+  @media (max-width: 900px) {
+    .intro__inner,
+    .band { grid-template-columns: 1fr; }
+  }
+</style>

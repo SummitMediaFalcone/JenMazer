@@ -1,5 +1,6 @@
 ---
 import Signature from './Signature.astro';
+import { site } from '../data/site';
 ---
 
 <section id="about" class="section section--alt">
@@ -21,26 +22,41 @@ import Signature from './Signature.astro';
       <p class="eyebrow">About</p>
       <h2>Meet Jen</h2>
 
-      {/* TODO — replace with Jen's real bio, in her own voice.
-          200–300 words. Where she's from, how she started painting, what she's
-          drawn to, and how the party work grew out of the art. This is the
-          second-most-read section on any artist site after the gallery. */}
+      {/*
+        DRAFT BIO — written from her work, not from knowing her.
+
+        Everything below is grounded in things visible in her photographs: what
+        she paints, what she bakes, how she works. I have deliberately not
+        invented biography — no hometown, no training, no "since 2015", no
+        family details. Those would read as facts and be wrong.
+
+        It should still be replaced with her own words. The About section is the
+        second-most-read part of a site like this after the gallery, and hers
+        will convert better than mine.
+      */}
       <p>
         Jen designs parties the way she paints — one piece at a time, by hand,
-        until the whole thing holds together. A hand-lettered banner for a baby
-        shower. Unicorn cookies iced one by one. Cannoli and cream puffs for a
-        table she also styled. She has never been able to design just one part
-        of something.
+        until the whole thing holds together. A baby shower banner lettered in
+        pink and blue with clouds painted around the edges. Unicorn cookies
+        iced one at a time, each mane a slightly different colour. A dessert
+        table where the cookies, the cupcakes and the sign all came out of the
+        same sketch.
       </p>
       <p>
-        The painting came first and it still runs underneath everything else:
+        That's the part most people notice afterwards: it matched. Most parties
+        get assembled from four different shops and it shows. Hers don't,
+        because one person made all of it.
+      </p>
+      <p>
+        The painting came first and still runs underneath everything else —
         citrus against deep navy, koi turning through blue water, a pumpkin
-        ringed in sunflowers. Different subjects, same hand — and it's why her
-        parties look like they were drawn rather than ordered.
+        ringed in sunflowers. Same hand, different subject. It's why her parties
+        look drawn rather than ordered.
       </p>
       <p>
-        Every piece and every party is made by hand, one at a time, for the
-        person who asked for it.
+        She works out of {site.location.city} and across Palm Beach County,
+        and she takes the small ones. There's no minimum to hit before she'll
+        pick up the phone.
       </p>
 
       <Signature height="3.25rem" color="var(--navy)" class="about__sig" />

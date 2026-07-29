@@ -26,7 +26,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).toString()
 const imageUrl = new URL(image, Astro.site ?? site.url).toString();
 
 // Title pattern: page name first (what the searcher scanned for), brand last.
-const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
+//
+// The brand suffix is dropped when it would push past ~60 characters, because
+// Google truncates there and a cut-off title loses the keyword at the end
+// rather than the brand. Keywords earn the click; the brand is a nicety.
+const TITLE_LIMIT = 60;
+const withBrand = `${title} | ${site.name}`;
+const fullTitle = title.includes(site.name)
+  ? title
+  : withBrand.length <= TITLE_LIMIT
+    ? withBrand
+    : title;
 
 // Person schema — this is what makes Google understand there is a real artist
 // behind the site, and it's the path to a Knowledge Panel for her name.

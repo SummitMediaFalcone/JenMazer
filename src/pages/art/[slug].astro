@@ -76,7 +76,15 @@ const related = artworks
   .map((x) => x.a);
 
 const metaTitle = `${title} — ${medium}${dimensions ? `, ${dimensions}` : ''}`;
-const metaDescription = description.slice(0, 155).trim() + '…';
+
+// Cut at a word boundary under 150 so the snippet isn't truncated mid-word by
+// Google, and leaves room for the ellipsis without tipping over ~155.
+const metaDescription = (() => {
+  const raw = description.replace(/\s+/g, ' ').trim();
+  if (raw.length <= 152) return raw;
+  const cut = raw.slice(0, 149);
+  return cut.slice(0, cut.lastIndexOf(' ')) + '…';
+})();
 ---
 
 <Base

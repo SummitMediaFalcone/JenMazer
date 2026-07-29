@@ -1,0 +1,273 @@
+---
+import Base from '../layouts/Base.astro';
+import PartyQuiz from '../components/PartyQuiz.astro';
+import { site } from '../data/site';
+
+/*
+ * The pricing page.
+ *
+ * Richard's call: Jen quotes every job herself rather than publishing fixed
+ * numbers. So this page doesn't list prices — it answers the price *question*,
+ * which is most of what the search intent actually is.
+ *
+ * Worth being straight about the tradeoff: SEO-PLAN.md §4 recommends
+ * publishing real starting numbers, because no competitor in the county does
+ * and it filters out tyre-kickers before they reach her inbox. A quote form
+ * captures the same searches but converts a little worse and lets some
+ * unqualified enquiries through.
+ *
+ * What makes this page still work: it answers "what drives the price", "is
+ * there a minimum" and "how fast do I hear back" — the three things a nervous
+ * buyer is actually asking when they type "how much does a dessert table
+ * cost". Competitors answer none of them. Add real starting numbers later and
+ * this page gets materially stronger.
+ */
+
+const title = 'Party Pricing & Packages | West Palm Beach';
+const description =
+  'Real answers on what a party costs in West Palm Beach — no $5,000 minimums. Tell Jen about your event and she quotes it herself, usually within a day.';
+
+const faqSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'Is there a minimum spend?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'No. Jen takes small parties that larger event companies turn down. There is no minimum package you have to grow into.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What affects the price of a party?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Guest count, how much of it is hand-made versus assembled, the size and detail of any hand-painted signage, whether desserts are included, and whether Jen sets up and breaks down on the day.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How do I get a price?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Fill in the short form with your event type, guest count, date and budget range. Jen prices every job herself and usually replies within a day or two.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Why do you ask for my budget?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'So Jen can tell you quickly and honestly what is possible at that number, instead of designing something you were never going to book. A range is enough.',
+        },
+      },
+    ],
+  },
+];
+---
+
+<Base {title} {description} schema={faqSchema}>
+  <section class="section intro">
+    <div class="wrap">
+      <p class="eyebrow">Pricing</p>
+      <h1>What it costs.</h1>
+      <p class="lede">
+        Jen prices every party herself, because no two are the same job. What
+        she will tell you up front is what actually moves the number — and that
+        there's no minimum you have to hit before she'll take the booking.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--navy">
+    <div class="wrap">
+      <h2>No $5,000 minimum.</h2>
+      <p class="lede">
+        A lot of event companies around West Palm Beach won't return a call
+        under five figures. Jen will take the small backyard first birthday and
+        the forty-person shower, and she'll put the same hands on both. That's
+        not being cheap — it's being available.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>What moves the price</h2>
+      <p class="lede">
+        Five things, in roughly the order they matter.
+      </p>
+
+      <ol class="drivers">
+        <li>
+          <h3>How many people</h3>
+          <p>
+            Forty guests is more dessert, more favors and a bigger table than
+            fifteen. This is usually the single biggest factor.
+          </p>
+        </li>
+        <li>
+          <h3>How much is made by hand</h3>
+          <p>
+            Individually iced cookies and a hand-lettered banner take real
+            hours. Simpler dessert and printed signage cost less. Jen will tell
+            you where the hand-made detail is worth it and where it isn't.
+          </p>
+        </li>
+        <li>
+          <h3>Signage size and detail</h3>
+          <p>
+            A small painted tabletop sign and a six-foot painted backdrop are
+            different jobs. Wording length and artwork complexity both count.
+          </p>
+        </li>
+        <li>
+          <h3>Whether desserts are included</h3>
+          <p>
+            Some people want the whole table. Some want the banner and styling
+            and are handling food themselves. Both are fine.
+          </p>
+        </li>
+        <li>
+          <h3>Setup, breakdown and travel</h3>
+          <p>
+            Dropping off is one price. Arriving early, styling the room and
+            coming back to break it down is another. Distance matters too —
+            she's based in {site.location.city} and travels across Palm Beach
+            County.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="wrap">
+      <h2>Straight answers</h2>
+      <div class="faq">
+        <article>
+          <h3>Why don't you list prices?</h3>
+          <p>
+            Because a number on a page is either so vague it's useless or so
+            specific it's wrong for your party. Jen would rather look at what
+            you're actually planning and give you a real figure she'll stand
+            behind.
+          </p>
+        </article>
+        <article>
+          <h3>Why do you ask my budget?</h3>
+          <p>
+            So she can be honest fast. If what you're picturing doesn't fit the
+            number, she'll say so and tell you what would — rather than
+            designing something beautiful you were never going to book. A range
+            is plenty.
+          </p>
+        </article>
+        <article>
+          <h3>How fast will I hear back?</h3>
+          <p>
+            Usually within a day or two. Jen reads every enquiry herself — there
+            is no office and no assistant between you and her.
+          </p>
+        </article>
+        <article>
+          <h3>Can I book just one thing?</h3>
+          <p>
+            Yes. Plenty of people order only a banner, or only a tray of
+            cookies. You don't have to book a whole party to work with her.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="quote" class="section">
+    <div class="wrap band">
+      <div>
+        <p class="eyebrow">Get Your Price</p>
+        <h2>Tell Jen about your party.</h2>
+        <p class="lede">
+          Four taps and your email — what you're celebrating, how many people,
+          when, and roughly what you want to spend. She'll come back with a real
+          number.
+        </p>
+        <p class="direct">
+          Rather talk? Call or text
+          <a href={`tel:${site.phone.replace(/[^\d+]/g, '')}`}>{site.phone}</a>,
+          or email <a href={`mailto:${site.email}`}>{site.email}</a>.
+        </p>
+      </div>
+      <div><PartyQuiz /></div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro { padding-block: clamp(2.5rem, 7vw, 4.5rem) clamp(1rem, 3vw, 2rem); }
+
+  .drivers {
+    list-style: none;
+    counter-reset: step;
+    margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    max-width: 62rem;
+  }
+
+  .drivers li {
+    counter-increment: step;
+    position: relative;
+    padding: 1.15rem 1.35rem 1.15rem 3.6rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .drivers li::before {
+    content: counter(step);
+    position: absolute;
+    left: 1.15rem;
+    top: 1.1rem;
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    color: var(--navy-deep);
+    background: var(--lemon);
+    border-radius: 50%;
+  }
+
+  .drivers h3 { font-size: var(--step-0); margin-bottom: 0.25rem; }
+  .drivers p { margin: 0; font-size: var(--step--1); color: var(--text-muted); }
+
+  .faq {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: clamp(1.25rem, 3vw, 2rem);
+    margin-top: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .faq h3 { font-size: var(--step-1); margin-bottom: 0.4rem; }
+  .faq p { margin: 0; font-size: var(--step--1); color: var(--text-muted); }
+
+  .band {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .direct { font-size: var(--step--1); color: var(--text-muted); }
+  .direct a { color: var(--orange); text-decoration: none; font-weight: 600; }
+  .direct a:hover { text-decoration: underline; }
+
+  @media (max-width: 900px) {
+    .band { grid-template-columns: 1fr; }
+  }
+</style>
