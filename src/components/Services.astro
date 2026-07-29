@@ -1,0 +1,144 @@
+---
+import { services } from '../data/services';
+import { site } from '../data/site';
+
+const where = site.location.city
+  ? `${site.location.city}, ${site.location.state}`
+  : 'your area';
+---
+
+<section id="parties" class="section section--navy">
+  <div class="wrap">
+    <p class="eyebrow">Parties &amp; Events</p>
+    <h2>The whole celebration, designed by one pair of hands.</h2>
+    <p class="lede">
+      Most parties get assembled from four different stores. Jennifer designs
+      them as one idea — the banner, the table, the favors, and the pastries all
+      drawn from the same palette, made for your family and nobody else's.
+      Serving {where}.
+    </p>
+
+    <div class="services">
+      {services.map((service) => (
+        <article class="service">
+          <div class="service__frame">
+            <img
+              src={`/images/parties/${service.image}`}
+              alt={service.alt}
+              loading="lazy"
+              decoding="async"
+              width="800"
+              height="600"
+            />
+          </div>
+          <div class="service__body">
+            <h3>{service.title}</h3>
+            <p class="service__blurb">{service.blurb}</p>
+            <ul class="service__list">
+              {service.includes.map((item) => <li>{item}</li>)}
+            </ul>
+            {service.startingAt && (
+              <p class="service__price">{service.startingAt}</p>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="services__cta">
+      <a href="#event-inquiry" class="btn btn--lemon">Tell Jennifer About Your Event</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .service {
+    display: flex;
+    flex-direction: column;
+    background: rgba(253, 250, 243, 0.05);
+    border: 1px solid rgba(253, 250, 243, 0.14);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+
+  .service:hover {
+    border-color: var(--lemon);
+    transform: translateY(-4px);
+  }
+
+  .service__frame {
+    aspect-ratio: 4 / 3;
+    background: var(--navy-deep);
+    overflow: hidden;
+  }
+
+  .service__frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .service__body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .service__body h3 {
+    color: var(--lemon);
+    margin-bottom: 0.5rem;
+  }
+
+  .service__blurb {
+    color: #c3c7e6;
+    font-size: var(--step--1);
+    margin-bottom: 1rem;
+  }
+
+  .service__list {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+    display: grid;
+    gap: 0.45rem;
+    font-size: var(--step--1);
+    color: #d8dbf0;
+  }
+
+  .service__list li {
+    position: relative;
+    padding-left: 1.15rem;
+  }
+
+  .service__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+
+  .service__price {
+    margin: auto 0 0;
+    padding-top: 0.75rem;
+    font-weight: 600;
+    color: var(--lemon);
+    font-size: var(--step--1);
+  }
+
+  .services__cta {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+</style>

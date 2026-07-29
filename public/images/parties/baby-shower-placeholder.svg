@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Placeholder for baby shower photo">
+  <rect width="800" height="600" fill="#1b1e4d"/>
+  <circle cx="230" cy="215" r="72" fill="#ffd21e" opacity="0.92"/>
+  <circle cx="400" cy="180" r="52" fill="#fdfaf3" opacity="0.9"/>
+  <circle cx="560" cy="220" r="66" fill="#f4611a" opacity="0.9"/>
+  <path d="M230 287v70M400 232v125M560 286v71" stroke="#5b5f9e" stroke-width="3" stroke-linecap="round"/>
+  <rect x="140" y="380" width="520" height="16" rx="4" fill="#7fb04a"/>
+  <rect x="180" y="330" width="440" height="120" rx="6" fill="#262a68" stroke="#ffd21e" stroke-width="2" opacity="0.96"/>
+  <g font-family="Inter, sans-serif" text-anchor="middle">
+    <text x="400" y="380" fill="#ffd21e" font-size="20" letter-spacing="2.4">BABY SHOWERS</text>
+    <text x="400" y="415" fill="#b8bce0" font-size="15" letter-spacing="1.6">PLACEHOLDER — ADD REAL PHOTO</text>
+  </g>
+</svg>

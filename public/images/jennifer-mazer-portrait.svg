@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Placeholder for a portrait photo of Jennifer Mazer">
+  <rect width="800" height="1000" fill="#f7f1e4"/>
+  <circle cx="400" cy="410" r="130" fill="#ece2cf"/>
+  <path d="M170 780q0-165 230-165t230 165z" fill="#ece2cf"/>
+  <g font-family="Inter, sans-serif" text-anchor="middle">
+    <text x="400" y="850" fill="#262a68" font-size="24" letter-spacing="2.4">PHOTO OF JENNIFER</text>
+    <text x="400" y="886" fill="#5a5d75" font-size="17" letter-spacing="1.4">PLACEHOLDER — ADD REAL PHOTO</text>
+  </g>
+</svg>

@@ -1,0 +1,88 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path to the social share image, relative to /public. */
+  image?: string;
+  /** 'website' for pages, 'article' for posts, 'product' for artwork. */
+  type?: 'website' | 'article' | 'product';
+  /** Extra JSON-LD blocks to inject (Product, Service, etc.). */
+  schema?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  image = '/images/og-default.jpg',
+  type = 'website',
+  schema = [],
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).toString();
+const imageUrl = new URL(image, Astro.site ?? site.url).toString();
+
+// Title pattern: page name first (what the searcher scanned for), brand last.
+const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
+
+// Person schema — this is what makes Google understand there is a real artist
+// behind the site, and it's the path to a Knowledge Panel for her name.
+const hasLocation = Boolean(site.location.city && site.location.state);
+
+const personSchema: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${site.url}/#person`,
+  name: site.name,
+  url: site.url,
+  jobTitle: 'Artist & Event Designer',
+  description: site.shortDescription,
+  knowsAbout: [
+    'Painting',
+    'Acrylic painting',
+    'Illustration',
+    'Art prints',
+    'Custom banners',
+    'Party design',
+    'Event styling',
+  ],
+  sameAs: Object.values(site.social).filter(Boolean),
+  ...(hasLocation && {
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: site.location.city,
+      addressRegion: site.location.state,
+      addressCountry: 'US',
+    },
+  }),
+};
+
+const allSchema = [personSchema, ...schema];
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content={type} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content="en_US" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+
+{
+  allSchema.map((s) => (
+    <script type="application/ld+json" set:html={JSON.stringify(s)} />
+  ))
+}

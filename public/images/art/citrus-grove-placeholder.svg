@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Placeholder for Citrus Grove painting">
+  <defs>
+    <radialGradient id="lem" cx="38%" cy="32%" r="72%">
+      <stop offset="0%" stop-color="#ffe45c"/><stop offset="100%" stop-color="#f2b705"/>
+    </radialGradient>
+    <radialGradient id="org" cx="36%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#ff8340"/><stop offset="100%" stop-color="#e8500f"/>
+    </radialGradient>
+    <g id="lemon">
+      <ellipse rx="52" ry="34" fill="url(#lem)"/>
+      <path d="M-52 0q-10-4-14 0 4 4 14 0z" fill="#f2b705"/>
+      <path d="M52 0q10-4 14 0-4 4-14 0z" fill="#f2b705"/>
+    </g>
+    <g id="orange">
+      <circle r="40" fill="url(#org)"/>
+      <path d="M0-40q-4-9 0-14 4 5 0 14z" fill="#4a6b35"/>
+    </g>
+    <g id="leaf">
+      <path d="M0 0q26-20 52 0-26 20-52 0z" fill="#4a6b35"/>
+    </g>
+    <g id="blossom">
+      <g fill="#fdfaf3">
+        <ellipse rx="6" ry="13" cy="-11"/>
+        <ellipse rx="6" ry="13" cy="-11" transform="rotate(72)"/>
+        <ellipse rx="6" ry="13" cy="-11" transform="rotate(144)"/>
+        <ellipse rx="6" ry="13" cy="-11" transform="rotate(216)"/>
+        <ellipse rx="6" ry="13" cy="-11" transform="rotate(288)"/>
+      </g>
+      <circle r="4" fill="#f2b705"/>
+    </g>
+  </defs>
+
+  <rect width="800" height="1000" fill="#262a68"/>
+
+  <use href="#leaf" transform="translate(96 118) rotate(-24)"/>
+  <use href="#leaf" transform="translate(520 96) rotate(18)"/>
+  <use href="#leaf" transform="translate(250 430) rotate(-8)"/>
+  <use href="#leaf" transform="translate(620 520) rotate(32)"/>
+  <use href="#leaf" transform="translate(120 700) rotate(12)"/>
+  <use href="#leaf" transform="translate(500 830) rotate(-30)"/>
+
+  <use href="#lemon" transform="translate(140 150) rotate(-28)"/>
+  <use href="#orange" transform="translate(360 120)"/>
+  <use href="#lemon" transform="translate(600 190) rotate(14)"/>
+  <use href="#orange" transform="translate(120 380)"/>
+  <use href="#lemon" transform="translate(380 330) rotate(-12)"/>
+  <use href="#orange" transform="translate(650 400)"/>
+  <use href="#lemon" transform="translate(200 570) rotate(22)"/>
+  <use href="#orange" transform="translate(450 620)"/>
+  <use href="#lemon" transform="translate(660 690) rotate(-18)"/>
+  <use href="#orange" transform="translate(180 840)"/>
+  <use href="#lemon" transform="translate(430 880) rotate(8)"/>
+  <use href="#orange" transform="translate(680 900)"/>
+
+  <use href="#blossom" transform="translate(255 210)"/>
+  <use href="#blossom" transform="translate(500 260)"/>
+  <use href="#blossom" transform="translate(70 250)"/>
+  <use href="#blossom" transform="translate(285 480)"/>
+  <use href="#blossom" transform="translate(560 470)"/>
+  <use href="#blossom" transform="translate(90 620)"/>
+  <use href="#blossom" transform="translate(350 740)"/>
+  <use href="#blossom" transform="translate(600 800)"/>
+  <use href="#blossom" transform="translate(280 940)"/>
+  <use href="#blossom" transform="translate(560 950)"/>
+
+  <g font-family="Inter, sans-serif" text-anchor="middle">
+    <rect x="180" y="472" width="440" height="56" rx="4" fill="#1b1e4d" opacity="0.82"/>
+    <text x="400" y="507" fill="#ffd21e" font-size="19" letter-spacing="2.6">PLACEHOLDER — ADD REAL PHOTO</text>
+  </g>
+</svg>

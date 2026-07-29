@@ -1,0 +1,82 @@
+---
+/*
+ * THE LOGO — Jennifer's signature.
+ *
+ * Right now this renders "Jennifer Mazer" in a script face as a stand-in. It
+ * looks good and it ships today, but it is not actually her handwriting, and
+ * her real signature is the whole point of the request.
+ *
+ * TO SWAP IN THE REAL ONE:
+ *   1. She signs her name large on unlined white paper, black felt-tip or
+ *      brush pen. Two or three tries.
+ *   2. Photograph it straight-on in daylight.
+ *   3. Send it to me — I'll vectorize it and replace the block marked
+ *      REAL SIGNATURE below with the traced <path>.
+ *
+ * Nothing else in the codebase needs to change. Every usage — header, footer,
+ * favicon, artwork watermark, social share image — points at this one file.
+ */
+
+interface Props {
+  /** Rendered height in CSS units. */
+  height?: string;
+  /** Color; defaults to inheriting from the parent. */
+  color?: string;
+  class?: string;
+  /** Set false when the signature sits next to visible text saying the name. */
+  labelled?: boolean;
+}
+
+const {
+  height = '2.75rem',
+  color = 'currentColor',
+  class: className = '',
+  labelled = true,
+} = Astro.props;
+---
+
+<span
+  class:list={['signature', className]}
+  style={`--sig-height:${height};--sig-color:${color};`}
+  role={labelled ? 'img' : undefined}
+  aria-label={labelled ? 'Jennifer Mazer' : undefined}
+  aria-hidden={labelled ? undefined : 'true'}
+>
+  {/*
+    REAL SIGNATURE — when the traced SVG arrives, delete the <span> below and
+    uncomment this, pasting the path data in:
+
+    <svg viewBox="0 0 600 160" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+      <path d="…" stroke="var(--sig-color)" stroke-width="5"
+            stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  */}
+  <span class="signature__text" aria-hidden="true">Jennifer Mazer</span>
+</span>
+
+<style>
+  .signature {
+    display: inline-flex;
+    align-items: center;
+    color: var(--sig-color);
+    line-height: 1;
+  }
+
+  .signature svg {
+    height: var(--sig-height);
+    width: auto;
+  }
+
+  /* The placeholder wordmark. Sized so its cap-height roughly matches what a
+     traced signature would occupy, which keeps the header from shifting when
+     the real one drops in. */
+  .signature__text {
+    font-family: var(--font-script);
+    font-size: calc(var(--sig-height) * 1.55);
+    line-height: 0.78;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+    /* Italianno sits high in its em box; nudge it onto the baseline. */
+    transform: translateY(0.06em);
+  }
+</style>

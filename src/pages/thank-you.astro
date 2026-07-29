@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Thank you"
+  description="Your event details are on their way to Jennifer Mazer."
+  noindex
+>
+  <section class="section thanks">
+    <div class="wrap">
+      <p class="eyebrow">Got it</p>
+      <h1>Your details are on their way.</h1>
+      <p class="lede">
+        Jennifer reads every inquiry herself. She'll get back to you within a
+        day or two — usually with a few questions and some ideas.
+      </p>
+      <div class="thanks__actions">
+        <a href="/#art" class="btn btn--primary">Browse the Artwork</a>
+        <a href="/" class="btn btn--ghost">Back Home</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .thanks { padding-block: clamp(4rem, 12vw, 9rem); }
+  .thanks__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+</style>

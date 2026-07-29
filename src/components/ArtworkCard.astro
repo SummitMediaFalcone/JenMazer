@@ -1,0 +1,104 @@
+---
+import { formatPrice, type Artwork } from '../data/artworks';
+
+interface Props {
+  artwork: Artwork;
+  /** First few cards load eagerly; the rest lazy-load. */
+  priority?: boolean;
+}
+
+const { artwork, priority = false } = Astro.props;
+const { slug, title, image, alt, medium, dimensions, price, soldOut } = artwork;
+---
+
+<article class="card">
+  <a href={`/art/${slug}`} class="card__link">
+    <div class="card__frame">
+      <img
+        src={`/images/art/${image}`}
+        alt={alt}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
+        width="800"
+        height="1000"
+      />
+      {soldOut && <span class="card__badge">Sold</span>}
+    </div>
+
+    <div class="card__body">
+      <h3 class="card__title">{title}</h3>
+      <p class="card__meta">
+        {medium}{dimensions && <> · {dimensions}</>}
+      </p>
+      <p class="card__price">
+        {soldOut ? 'Sold' : formatPrice(price, artwork.currency)}
+      </p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .card__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .card__frame {
+    position: relative;
+    overflow: hidden;
+    background: var(--cream-deep);
+    border-radius: var(--radius);
+    aspect-ratio: 4 / 5;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .card__frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.2, 0, 0.2, 1);
+  }
+
+  .card__link:hover .card__frame {
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-4px);
+  }
+  .card__link:hover .card__frame img { transform: scale(1.04); }
+
+  .card__badge {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    padding: 0.3rem 0.7rem;
+    background: var(--navy);
+    color: var(--blossom);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 2px;
+  }
+
+  .card__body { padding-top: 1rem; }
+
+  .card__title {
+    font-size: var(--step-1);
+    margin-bottom: 0.2rem;
+  }
+
+  .card__meta,
+  .card__price {
+    margin: 0;
+    font-size: var(--step--1);
+  }
+
+  .card__meta { color: var(--text-muted); }
+
+  .card__price {
+    margin-top: 0.35rem;
+    font-weight: 600;
+    color: var(--orange);
+  }
+</style>

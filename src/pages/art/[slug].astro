@@ -1,0 +1,267 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArtworkCard from '../../components/ArtworkCard.astro';
+import { artworks, formatPrice } from '../../data/artworks';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return artworks.map((artwork) => ({
+    params: { slug: artwork.slug },
+    props: { artwork },
+  }));
+}
+
+const { artwork } = Astro.props;
+const {
+  title,
+  image,
+  alt,
+  medium,
+  dimensions,
+  year,
+  price,
+  kind,
+  stripeLink,
+  soldOut,
+  description,
+  tags,
+} = artwork;
+
+const imagePath = `/images/art/${image}`;
+
+// Product schema. This is what puts the price into Google's results and makes
+// the piece eligible for free Google Shopping listings via Merchant Center.
+const productSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: title,
+    image: new URL(imagePath, Astro.site ?? site.url).toString(),
+    description,
+    brand: { '@type': 'Brand', name: site.name },
+    creator: { '@id': `${site.url}/#person` },
+    ...(dimensions && { size: dimensions }),
+    material: medium,
+    category: kind === 'print' ? 'Art Print' : 'Original Painting',
+    offers: {
+      '@type': 'Offer',
+      url: new URL(Astro.url.pathname, Astro.site ?? site.url).toString(),
+      priceCurrency: artwork.currency,
+      // Schema requires a price; omit the offer block entirely rather than
+      // publishing a fake one.
+      ...(price !== null && { price: String(price) }),
+      availability: soldOut
+        ? 'https://schema.org/SoldOut'
+        : 'https://schema.org/InStock',
+      seller: { '@id': `${site.url}/#person` },
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+      { '@type': 'ListItem', position: 2, name: 'Art', item: `${site.url}/#art` },
+      { '@type': 'ListItem', position: 3, name: title },
+    ],
+  },
+];
+
+// Related pieces: anything sharing a tag, falling back to whatever else exists.
+const related = artworks
+  .filter((a) => a.slug !== artwork.slug)
+  .map((a) => ({ a, score: a.tags.filter((t) => tags.includes(t)).length }))
+  .sort((x, y) => y.score - x.score)
+  .slice(0, 3)
+  .map((x) => x.a);
+
+const metaTitle = `${title} — ${medium}${dimensions ? `, ${dimensions}` : ''}`;
+const metaDescription = description.slice(0, 155).trim() + '…';
+---
+
+<Base
+  title={metaTitle}
+  description={metaDescription}
+  image={imagePath}
+  type="product"
+  schema={productSchema}
+>
+  <article class="section detail">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span aria-hidden="true">/</span>
+        <a href="/#art">Art</a> <span aria-hidden="true">/</span>
+        <span aria-current="page">{title}</span>
+      </nav>
+
+      <div class="detail__grid">
+        <figure class="detail__figure">
+          <img
+            src={imagePath}
+            {alt}
+            width="1200"
+            height="1500"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </figure>
+
+        <div class="detail__info">
+          <h1>{title}</h1>
+
+          <dl class="specs">
+            <div><dt>Medium</dt><dd>{medium}</dd></div>
+            {dimensions && <div><dt>Size</dt><dd>{dimensions}</dd></div>}
+            {year && <div><dt>Year</dt><dd>{year}</dd></div>}
+            <div>
+              <dt>Type</dt>
+              <dd>{kind === 'original' ? 'Original — one of one' : 'Archival print'}</dd>
+            </div>
+          </dl>
+
+          <p class="detail__price">
+            {soldOut ? 'Sold' : formatPrice(price, artwork.currency)}
+          </p>
+
+          {soldOut ? (
+            <p class="detail__note">
+              This piece has found a home. <a href="/#contact">Ask Jennifer</a>
+              about commissioning something similar.
+            </p>
+          ) : stripeLink ? (
+            <>
+              <a href={stripeLink} class="btn btn--primary detail__buy">
+                Buy This Piece
+              </a>
+              <p class="detail__note">
+                {site.commerce.shippingNote} Secure checkout by Stripe.
+              </p>
+            </>
+          ) : (
+            <>
+              <a href="/#contact" class="btn btn--primary detail__buy">
+                Inquire About This Piece
+              </a>
+              <p class="detail__note">
+                Message Jennifer for price and availability.
+              </p>
+            </>
+          )}
+
+          <div class="detail__desc">
+            <h2>About this piece</h2>
+            <p>{description}</p>
+          </div>
+        </div>
+      </div>
+
+      {related.length > 0 && (
+        <section class="related">
+          <h2>More work</h2>
+          <div class="related__grid">
+            {related.map((a) => <ArtworkCard artwork={a} />)}
+          </div>
+        </section>
+      )}
+    </div>
+  </article>
+</Base>
+
+<style>
+  .crumbs {
+    font-size: var(--step--1);
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+  .crumbs a { color: var(--text-muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--orange); }
+  .crumbs span { margin-inline: 0.35rem; }
+
+  .detail__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .detail__figure {
+    margin: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--cream-deep);
+    box-shadow: var(--shadow);
+  }
+
+  .detail__figure img { width: 100%; height: auto; }
+
+  .detail__info h1 { margin-bottom: 1.5rem; }
+
+  .specs {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0 0 1.75rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .specs > div {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 1rem;
+  }
+
+  .specs dt {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding-top: 0.2em;
+  }
+
+  .specs dd { margin: 0; font-size: var(--step-0); }
+
+  .detail__price {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    color: var(--orange);
+    margin-bottom: 1.25rem;
+  }
+
+  .detail__buy { width: 100%; }
+
+  .detail__note {
+    margin-top: 0.85rem;
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+
+  .detail__desc {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .detail__desc h2 {
+    font-size: var(--step-1);
+    margin-bottom: 0.75rem;
+  }
+
+  .related {
+    margin-top: clamp(4rem, 9vw, 7rem);
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+    border-top: 1px solid var(--border);
+  }
+
+  .related__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 860px) {
+    .detail__grid { grid-template-columns: 1fr; }
+  }
+</style>

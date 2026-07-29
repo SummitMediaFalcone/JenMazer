@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Placeholder for party design photo">
+  <rect width="800" height="600" fill="#1b1e4d"/>
+  <rect x="120" y="400" width="560" height="18" rx="5" fill="#7fb04a"/>
+  <rect x="200" y="300" width="90" height="100" rx="5" fill="#ffd21e"/>
+  <rect x="330" y="250" width="140" height="150" rx="5" fill="#f4611a"/>
+  <rect x="510" y="320" width="90" height="80" rx="5" fill="#fdfaf3" opacity="0.9"/>
+  <circle cx="400" cy="215" r="26" fill="#ffd21e"/>
+  <rect x="180" y="120" width="440" height="110" rx="6" fill="#262a68" stroke="#ffd21e" stroke-width="2"/>
+  <g font-family="Inter, sans-serif" text-anchor="middle">
+    <text x="400" y="165" fill="#ffd21e" font-size="20" letter-spacing="2.4">PARTY DESIGN</text>
+    <text x="400" y="200" fill="#b8bce0" font-size="15" letter-spacing="1.6">PLACEHOLDER — ADD REAL PHOTO</text>
+  </g>
+</svg>

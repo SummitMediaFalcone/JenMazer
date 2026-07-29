@@ -1,0 +1,108 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import ArtworkCard from '../components/ArtworkCard.astro';
+import Prints from '../components/Prints.astro';
+import Services from '../components/Services.astro';
+import About from '../components/About.astro';
+import EventInquiry from '../components/EventInquiry.astro';
+import Contact from '../components/Contact.astro';
+import { artworks } from '../data/artworks';
+import { site } from '../data/site';
+import { services } from '../data/services';
+
+const hasLocation = Boolean(site.location.city && site.location.state);
+
+// LocalBusiness schema — this is what makes the party/event side eligible for
+// the Google map pack. It only fires once a city is set, because a
+// LocalBusiness with no address is worse than none at all.
+const localBusinessSchema = hasLocation
+  ? [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'LocalBusiness',
+        '@id': `${site.url}/#business`,
+        name: site.name,
+        description: site.shortDescription,
+        url: site.url,
+        email: site.email,
+        ...(site.phone && { telephone: site.phone }),
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: site.location.city,
+          addressRegion: site.location.state,
+          addressCountry: 'US',
+        },
+        areaServed: site.location.serviceArea.map((area) => ({
+          '@type': 'City',
+          name: area,
+        })),
+        founder: { '@id': `${site.url}/#person` },
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: 'Party & Event Services',
+          itemListElement: services.map((s) => ({
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: s.title,
+              description: s.blurb,
+            },
+          })),
+        },
+      },
+    ]
+  : [];
+
+const title = 'Jennifer Mazer — Original Art, Custom Banners & Party Design';
+const description =
+  'Original acrylic paintings and archival prints by artist Jennifer Mazer, plus hand-painted custom banners, baby showers, and full party design.';
+---
+
+<Base {title} {description} schema={localBusinessSchema}>
+  <Hero />
+
+  <section id="art" class="section">
+    <div class="wrap">
+      <p class="eyebrow">Original Work</p>
+      <h2>Paintings &amp; prints</h2>
+      <p class="lede">
+        Acrylic on canvas, painted by hand. Originals are one of one; prints are
+        made to last on archival cotton paper.
+      </p>
+
+      {artworks.length > 0 ? (
+        <div class="grid">
+          {artworks.map((artwork, i) => (
+            <ArtworkCard {artwork} priority={i < 3} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty">
+          Artwork is being photographed — check back shortly, or
+          <a href="#contact">get in touch</a> to ask what's available now.
+        </p>
+      )}
+    </div>
+  </section>
+
+  <Prints />
+  <Services />
+  <EventInquiry />
+  <About />
+  <Contact />
+</Base>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: clamp(1.5rem, 3.5vw, 2.75rem);
+    margin-top: clamp(2.5rem, 6vw, 3.5rem);
+  }
+
+  .empty {
+    margin-top: 2rem;
+    color: var(--text-muted);
+  }
+</style>

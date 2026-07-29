@@ -1,0 +1,372 @@
+---
+import { site } from '../data/site';
+import {
+  eventTypes,
+  guestCounts,
+  budgetRanges,
+  servicesNeeded,
+  referralSources,
+} from '../data/eventForm';
+
+/*
+ * "Tell us about your event" — the lead form.
+ *
+ * Posts to a Netlify Function that sends the inquiry through Resend. The
+ * function is already written at netlify/functions/event-inquiry.js; it goes
+ * live the moment RESEND_API_KEY is set in the Netlify dashboard.
+ *
+ * Until then ENDPOINT stays empty and the form falls back to a prefilled
+ * mailto. That's deliberate: a form that appears to submit but quietly drops
+ * a $3,000 wedding inquiry is far worse than one that's honest about not
+ * being wired up yet.
+ */
+const ENDPOINT = ''; // Set to '/.netlify/functions/event-inquiry' once deployed + keyed
+
+interface Props {
+  /** Standalone page hides the intro copy that the homepage already shows. */
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+---
+
+<section id="event-inquiry" class="section section--alt">
+  <div class="wrap">
+    {!compact && (
+      <div class="intro">
+        <p class="eyebrow">Start Here</p>
+        <h2>Tell us about your event.</h2>
+        <p class="lede">
+          The more Jennifer knows up front, the faster she can tell you what's
+          possible and what it costs. Takes about two minutes — and there's no
+          obligation on the other side of it.
+        </p>
+      </div>
+    )}
+
+    <form
+      class="inquiry"
+      method="POST"
+      action={ENDPOINT || undefined}
+      data-fallback-email={ENDPOINT ? undefined : site.email}
+    >
+      {!ENDPOINT && (
+        <p class="notice" role="status">
+          <strong>Not connected yet.</strong> Submitting will open your email
+          app with everything filled in, so nothing gets lost. Resend wiring is
+          ready — see <code>netlify/functions/event-inquiry.js</code>.
+        </p>
+      )}
+
+      <fieldset>
+        <legend>Who you are</legend>
+        <div class="row">
+          <div class="field">
+            <label for="ev-name">Your name <span aria-hidden="true">*</span></label>
+            <input id="ev-name" name="name" type="text" required autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="ev-email">Email <span aria-hidden="true">*</span></label>
+            <input id="ev-email" name="email" type="email" required autocomplete="email" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="ev-phone">Phone</label>
+            <input id="ev-phone" name="phone" type="tel" autocomplete="tel" />
+          </div>
+          <div class="field">
+            <label for="ev-source">How did you hear about Jennifer?</label>
+            <select id="ev-source" name="source">
+              <option value="">Choose one…</option>
+              {referralSources.map((s) => <option value={s}>{s}</option>)}
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>The event</legend>
+        <div class="row">
+          <div class="field">
+            <label for="ev-type">What are you celebrating? <span aria-hidden="true">*</span></label>
+            <select id="ev-type" name="eventType" required>
+              <option value="">Choose one…</option>
+              {eventTypes.map((t) => <option value={t}>{t}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="ev-date">Event date</label>
+            <input id="ev-date" name="eventDate" type="date" />
+            <p class="hint">Not locked in? Leave it blank and say so below.</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="ev-guests">Roughly how many guests?</label>
+            <select id="ev-guests" name="guestCount">
+              <option value="">Choose one…</option>
+              {guestCounts.map((g) => <option value={g}>{g}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="ev-location">Where is it?</label>
+            <input
+              id="ev-location"
+              name="location"
+              type="text"
+              placeholder="City, or venue name"
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="ev-budget">What's your budget?</label>
+          <select id="ev-budget" name="budget">
+            <option value="">Choose one…</option>
+            {budgetRanges.map((b) => <option value={b}>{b}</option>)}
+          </select>
+          <p class="hint">
+            A range is plenty. It's the fastest way for Jennifer to tell you
+            what she can do — and she'd rather say so up front than waste your time.
+          </p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>What do you need?</legend>
+        <p class="hint hint--top">Check everything that applies.</p>
+        <div class="checks">
+          {servicesNeeded.map((s, i) => (
+            <label class="check" for={`ev-svc-${i}`}>
+              <input id={`ev-svc-${i}`} type="checkbox" name="services" value={s} />
+              <span>{s}</span>
+            </label>
+          ))}
+        </div>
+
+        <div class="field">
+          <label for="ev-theme">Theme, colors, or anything you've pinned</label>
+          <input
+            id="ev-theme"
+            name="theme"
+            type="text"
+            placeholder="e.g. lemons and navy, boho neutrals, Bluey"
+          />
+        </div>
+
+        <div class="field">
+          <label for="ev-message">Tell her about it</label>
+          <textarea
+            id="ev-message"
+            name="message"
+            rows="5"
+            placeholder="Who's it for, what you're picturing, anything you're unsure about."
+          ></textarea>
+        </div>
+      </fieldset>
+
+      {/* Honeypot — bots fill this, people never see it. */}
+      <input
+        type="text"
+        name="_company"
+        class="visually-hidden"
+        tabindex="-1"
+        autocomplete="off"
+        aria-hidden="true"
+      />
+
+      <div class="submit">
+        <button type="submit" class="btn btn--primary">Send My Event Details</button>
+        <p class="hint">
+          Jennifer reads every inquiry herself and usually replies within a day
+          or two. Your details go to her and nobody else.
+        </p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .intro { margin-bottom: clamp(2rem, 5vw, 3rem); }
+
+  .inquiry {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+    max-width: 900px;
+    padding: clamp(1.5rem, 3.5vw, 2.75rem);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--orange);
+    border-radius: var(--radius);
+  }
+
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: grid;
+    gap: 1.15rem;
+  }
+
+  legend {
+    padding: 0;
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  fieldset + fieldset {
+    padding-top: clamp(1.25rem, 3vw, 2rem);
+    border-top: 1px solid var(--border);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 1.15rem;
+  }
+
+  .field { display: grid; gap: 0.4rem; align-content: start; }
+
+  .field label {
+    font-size: var(--step--1);
+    font-weight: 600;
+  }
+
+  .field label span { color: var(--orange); }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    font-family: inherit;
+    font-size: var(--step-0);
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .field textarea { resize: vertical; }
+
+  .field input:focus-visible,
+  .field select:focus-visible,
+  .field textarea:focus-visible { border-color: var(--orange); }
+
+  .hint {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .hint--top { margin-top: -0.4rem; }
+
+  .checks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+    gap: 0.6rem;
+  }
+
+  .check {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 0.85rem;
+    font-size: var(--step--1);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color 0.16s ease, background-color 0.16s ease;
+  }
+
+  .check:hover { border-color: var(--orange); }
+
+  .check input {
+    width: 1.05rem;
+    height: 1.05rem;
+    accent-color: var(--orange);
+    flex-shrink: 0;
+    margin: 0;
+  }
+
+  .check:has(input:checked) {
+    border-color: var(--orange);
+    background: color-mix(in srgb, var(--orange) 9%, var(--bg));
+  }
+
+  .submit {
+    display: grid;
+    gap: 0.85rem;
+    justify-items: start;
+    padding-top: clamp(1.25rem, 3vw, 2rem);
+    border-top: 1px solid var(--border);
+  }
+
+  .notice {
+    margin: 0;
+    padding: 0.9rem 1rem;
+    background: rgba(255, 210, 30, 0.16);
+    border-left: 3px solid var(--lemon-deep);
+    border-radius: 2px;
+    font-size: var(--step--1);
+  }
+
+  .notice code {
+    font-size: 0.85em;
+    background: rgba(38, 42, 104, 0.1);
+    padding: 0.1em 0.35em;
+    border-radius: 2px;
+  }
+</style>
+
+<script>
+  /*
+   * Fallback path only. When no endpoint is configured the form has no action,
+   * so instead of a silent no-op we compose a prefilled email. Every answer
+   * survives, including the checkbox group.
+   */
+  const form = document.querySelector<HTMLFormElement>('.inquiry');
+  const fallbackEmail = form?.dataset.fallbackEmail;
+
+  if (form && fallbackEmail) {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const data = new FormData(form);
+      if (data.get('_company')) return; // honeypot tripped
+
+      const labels: Record<string, string> = {
+        name: 'Name',
+        email: 'Email',
+        phone: 'Phone',
+        source: 'Heard about her via',
+        eventType: 'Event type',
+        eventDate: 'Event date',
+        guestCount: 'Guest count',
+        location: 'Location',
+        budget: 'Budget',
+        theme: 'Theme / colors',
+        message: 'Details',
+      };
+
+      const lines = Object.entries(labels)
+        .map(([key, label]) => [label, String(data.get(key) ?? '').trim()])
+        .filter(([, value]) => value !== '')
+        .map(([label, value]) => `${label}: ${value}`);
+
+      const services = data.getAll('services').map(String);
+      if (services.length) lines.push(`Needs: ${services.join(', ')}`);
+
+      const subject = `Event inquiry — ${data.get('eventType') || 'New event'}`;
+      window.location.href =
+        `mailto:${fallbackEmail}` +
+        `?subject=${encodeURIComponent(subject)}` +
+        `&body=${encodeURIComponent(lines.join('\n'))}`;
+    });
+  }
+</script>

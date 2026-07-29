@@ -1,0 +1,264 @@
+/* ==========================================================================
+   Jennifer Mazer — design system
+
+   The palette is sampled directly from her citrus paintings: the navy ground,
+   the lemon yellow, the blood-orange, the olive leaf, the cream blossom.
+   Using her own colors means the site looks like her work instead of looking
+   like a template that happens to contain her work.
+   ========================================================================== */
+
+:root {
+  /* --- Brand, sampled from the canvases --- */
+  --navy: #262a68;
+  --navy-deep: #1b1e4d;
+  --navy-soft: #3a3f85;
+
+  --lemon: #ffd21e;
+  --lemon-bright: #ffe45c;
+  --lemon-deep: #f2b705;
+
+  --orange: #f4611a;
+  --orange-soft: #ff8340;
+
+  --leaf: #4a6b35;
+  --leaf-light: #7fb04a;
+
+  --blossom: #fdfaf3;
+  --cream: #f7f1e4;
+  --cream-deep: #ece2cf;
+
+  /* --- Semantic --- */
+  --bg: var(--blossom);
+  --bg-alt: var(--cream);
+  --surface: #ffffff;
+  --text: #1a1c2e;
+  --text-muted: #5a5d75;
+  --border: rgba(38, 42, 104, 0.14);
+  --accent: var(--orange);
+  --accent-text: #ffffff;
+
+  /* --- Type --- */
+  --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-script: 'Italianno', 'Snell Roundhand', 'Brush Script MT', cursive;
+
+  /* --- Scale --- */
+  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.92rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.12rem);
+  --step-1: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --step-2: clamp(1.6rem, 1.4rem + 1vw, 2.1rem);
+  --step-3: clamp(2.1rem, 1.7rem + 2vw, 3.2rem);
+  --step-4: clamp(2.7rem, 2rem + 3.6vw, 5rem);
+
+  --space: 1rem;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --max-w: 1240px;
+  --radius: 4px;
+  --shadow: 0 1px 2px rgba(26, 28, 46, 0.06), 0 12px 32px -12px rgba(26, 28, 46, 0.18);
+  --shadow-lift: 0 2px 4px rgba(26, 28, 46, 0.08), 0 24px 48px -16px rgba(26, 28, 46, 0.28);
+}
+
+/* Dark mode keeps her navy as the ground — which is how the paintings
+   actually look. This is the one case where dark mode is more on-brand
+   than light mode. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--navy-deep);
+    --bg-alt: var(--navy);
+    --surface: #23264f;
+    --text: var(--blossom);
+    --text-muted: #a9adcd;
+    --border: rgba(253, 250, 243, 0.16);
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: var(--navy-deep);
+  --bg-alt: var(--navy);
+  --surface: #23264f;
+  --text: var(--blossom);
+  --text-muted: #a9adcd;
+  --border: rgba(253, 250, 243, 0.16);
+}
+
+:root[data-theme='light'] {
+  --bg: var(--blossom);
+  --bg-alt: var(--cream);
+  --surface: #ffffff;
+  --text: #1a1c2e;
+  --text-muted: #5a5d75;
+  --border: rgba(38, 42, 104, 0.14);
+}
+
+/* --- Reset --------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5em;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--step-4); }
+h2 { font-size: var(--step-3); }
+h3 { font-size: var(--step-1); }
+
+p { margin: 0 0 1em; max-width: 68ch; text-wrap: pretty; }
+
+a { color: inherit; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+
+:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
+
+/* --- Layout -------------------------------------------------------------- */
+.wrap {
+  width: 100%;
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: clamp(3.5rem, 9vw, 7.5rem);
+}
+
+.section--alt { background: var(--bg-alt); }
+
+.section--navy {
+  background: var(--navy);
+  color: var(--blossom);
+  --text: var(--blossom);
+  --text-muted: #b8bce0;
+  --border: rgba(253, 250, 243, 0.2);
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.9rem;
+}
+
+.section--navy .eyebrow { color: var(--lemon); }
+
+.lede {
+  font-size: var(--step-1);
+  color: var(--text-muted);
+  max-width: 58ch;
+}
+
+/* --- Buttons ------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.6rem;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.btn:hover { transform: translateY(-2px); }
+
+.btn--primary {
+  background: var(--orange);
+  color: #fff;
+  border-color: var(--orange);
+}
+.btn--primary:hover { background: #d94d0d; border-color: #d94d0d; }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+.btn--ghost:hover { border-color: var(--orange); color: var(--orange); }
+
+.btn--lemon {
+  background: var(--lemon);
+  color: var(--navy-deep);
+  border-color: var(--lemon);
+}
+.btn--lemon:hover { background: var(--lemon-bright); border-color: var(--lemon-bright); }
+
+/* --- Utility ------------------------------------------------------------- */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 999;
+  background: var(--orange);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+}
+.skip-link:focus { top: 1rem; }
