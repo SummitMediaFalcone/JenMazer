@@ -18,6 +18,8 @@
  * No API key is stored in this file or anywhere in the repo.
  */
 
+import { leadEmail, confirmationEmail, textVersion } from './_email.js';
+
 const FIELD_LABELS = {
   name: 'Name',
   email: 'Email',
@@ -30,12 +32,17 @@ const FIELD_LABELS = {
   message: 'Notes',
 };
 
-const escapeHtml = (value) =>
-  String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+// Fields the customer sees echoed back in their confirmation. Their own name
+// and email are omitted — they know those, and repeating them reads like a
+// form dump rather than a reply from a person.
+const CUSTOMER_LABELS = {
+  eventType: 'Event',
+  guestCount: 'Guests',
+  eventDate: 'Date',
+  dateRange: 'Timeframe',
+  budget: 'Budget',
+  message: 'Notes',
+};
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -78,69 +85,68 @@ export default async function handler(req, res) {
   if (services) rows.push(['Needs', services]);
 
   const budget = get('budget');
-  const eventType = get('eventType') || 'New event';
+  const eventType = get('eventType') || 'New enquiry';
+  const phone = get('phone');
 
   // Event type and budget in the subject — the two things that decide whether
   // she opens it now or tonight.
   const subject = `Party inquiry — ${eventType}${budget ? ` (${budget})` : ''} — ${name}`;
 
-  const html = `
-    <div style="font-family:system-ui,-apple-system,Segoe UI,sans-serif;max-width:600px">
-      <h2 style="font-family:Georgia,serif;color:#262a68;margin:0 0 4px">New party inquiry</h2>
-      <p style="color:#5a5d75;margin:0 0 20px">From jenifermazer.com</p>
-      <table style="width:100%;border-collapse:collapse">
-        ${rows
-          .map(
-            ([label, value]) => `
-          <tr>
-            <td style="padding:9px 12px 9px 0;vertical-align:top;color:#5a5d75;
-                       font-size:12px;letter-spacing:.08em;text-transform:uppercase;
-                       white-space:nowrap;border-bottom:1px solid #ece2cf">
-              ${escapeHtml(label)}
-            </td>
-            <td style="padding:9px 0;vertical-align:top;color:#1a1c2e;font-size:15px;
-                       border-bottom:1px solid #ece2cf">
-              ${escapeHtml(value).replace(/\n/g, '<br>')}
-            </td>
-          </tr>`
-          )
-          .join('')}
-      </table>
-      <p style="margin:22px 0 0">
-        <a href="mailto:${escapeHtml(email)}"
-           style="background:#f4611a;color:#fff;padding:11px 20px;border-radius:4px;
-                  text-decoration:none;font-size:14px;font-weight:600">
-          Reply to ${escapeHtml(name)}
-        </a>
-      </p>
-    </div>`;
-
-  const text = rows.map(([label, value]) => `${label}: ${value}`).join('\n');
-
-  try {
-    const response = await fetch('https://api.resend.com/emails', {
+  const send = (payload) =>
+    fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${RESEND_API_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        from: INQUIRY_FROM,
-        to: [INQUIRY_TO],
-        reply_to: email,
-        subject,
-        html,
-        text,
-      }),
+      body: JSON.stringify(payload),
+    });
+
+  // 1. The lead, to Jen. This one must succeed.
+  try {
+    const response = await send({
+      from: INQUIRY_FROM,
+      to: [INQUIRY_TO],
+      reply_to: email,
+      subject,
+      html: leadEmail({ name, email, phone, rows, eventType, budget }),
+      text: textVersion(rows),
     });
 
     if (!response.ok) {
-      console.error('Resend error', response.status, await response.text());
+      console.error('Resend error (lead)', response.status, await response.text());
       return res.status(502).send('Could not send the message');
     }
   } catch (err) {
-    console.error('Resend request failed', err);
+    console.error('Resend request failed (lead)', err);
     return res.status(502).send('Could not send the message');
+  }
+
+  // 2. The confirmation, to the customer. Best-effort only — if this fails the
+  //    enquiry still reached Jen, which is the part that matters, so it must
+  //    never turn a successful submission into an error for the sender.
+  try {
+    const customerRows = Object.entries(CUSTOMER_LABELS)
+      .map(([key, label]) => [label, get(key)])
+      .filter(([, value]) => value !== '');
+    if (services) customerRows.push(['Needs', services]);
+
+    await send({
+      from: INQUIRY_FROM,
+      to: [email],
+      reply_to: INQUIRY_TO,
+      subject: 'Thanks — I have your party details',
+      html: confirmationEmail({ name, rows: customerRows }),
+      text:
+        `Thank you, ${name.split(' ')[0]}.\n\n` +
+        `I have your details and I'm looking at them personally. I'll come back ` +
+        `to you within a day or two with what I can do and what it would cost.\n\n` +
+        `If your date is close, call or text me on (954) 899-9621.\n\n` +
+        `What you sent me:\n${textVersion(customerRows)}\n\n` +
+        `Talk soon,\nJenifer Mazer\njenifermazer.com`,
+    });
+  } catch (err) {
+    console.error('Confirmation email failed (non-fatal)', err);
   }
 
   res.setHeader('Location', '/thank-you');

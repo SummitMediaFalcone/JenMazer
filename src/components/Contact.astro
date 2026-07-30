@@ -2,17 +2,15 @@
 import { site } from '../data/site';
 
 /*
- * The form posts to Formspree — no backend, no server, works on a static host.
+ * The short contact form at the foot of the page, for people who just have a
+ * question rather than an event to plan.
  *
- * TODO before launch: create a free Formspree account and paste the endpoint
- * below. Netlify Forms is an equally good option if we deploy there; it needs
- * only a `netlify` attribute on the form and no third party at all.
- *
- * Until an endpoint is set, the form renders as a mailto link instead of
- * silently swallowing submissions — a form that looks like it works but
- * throws inquiries away is worse than no form.
+ * Posts to the same /api/event-inquiry function as the lead box, so there is
+ * one email path to maintain instead of two. Field names match what the
+ * function expects — the topic select is named eventType so it lands in the
+ * subject line and Jen can triage it the same way.
  */
-const FORMSPREE_ENDPOINT = ''; // TODO e.g. 'https://formspree.io/f/xxxxxxxx'
+const ENDPOINT = '/api/event-inquiry';
 ---
 
 <section id="contact" class="section section--alt">
@@ -21,81 +19,84 @@ const FORMSPREE_ENDPOINT = ''; // TODO e.g. 'https://formspree.io/f/xxxxxxxx'
       <p class="eyebrow">Get in Touch</p>
       <h2>Just have a quick question?</h2>
       <p>
-        Planning something? The <a href="/party-inquiry">event form</a> is
-        faster — it asks everything Jen needs so she can answer properly the
-        first time. For anything else, this reaches her directly. She reads
-        every message herself and usually replies within a day or two.
+        Planning something? The <a href="/pricing">event form</a> is faster —
+        it asks everything Jen needs so she can answer properly the first time.
+        For anything else, this reaches her directly. She reads every message
+        herself and usually replies within a day or two.
       </p>
 
       <ul class="contact__direct">
         <li>
+          <span>Phone</span>
+          <a href={`tel:${site.phone.replace(/[^\d+]/g, '')}`}>{site.phone}</a>
+        </li>
+        <li>
           <span>Email</span>
           <a href={`mailto:${site.email}`}>{site.email}</a>
         </li>
-        {site.phone && (
-          <li>
-            <span>Phone</span>
-            <a href={`tel:${site.phone.replace(/[^\d+]/g, '')}`}>{site.phone}</a>
-          </li>
-        )}
         {site.social.instagram && (
           <li>
             <span>Instagram</span>
             <a href={site.social.instagram} target="_blank" rel="noopener">
-              Follow along
+              @jeniferilana
             </a>
           </li>
         )}
       </ul>
     </div>
 
-    {FORMSPREE_ENDPOINT ? (
-      <form class="contact__form" action={FORMSPREE_ENDPOINT} method="POST">
-        <div class="field">
-          <label for="name">Your name</label>
-          <input type="text" id="name" name="name" required autocomplete="name" />
-        </div>
-
-        <div class="field">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required autocomplete="email" />
-        </div>
-
-        <div class="field">
-          <label for="topic">What's this about?</label>
-          <select id="topic" name="topic">
-            <option>Party design &amp; planning</option>
-            <option>Baby shower or gender reveal</option>
-            <option>Custom banner</option>
-            <option>Pastries &amp; party goods</option>
-            <option>Buying a painting</option>
-            <option>Commissioning original art</option>
-            <option>Something else</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="message">Tell her about it</label>
-          <textarea id="message" name="message" rows="5" required></textarea>
-        </div>
-
-        {/* Honeypot — bots fill it, humans never see it. */}
-        <input type="text" name="_gotcha" class="visually-hidden" tabindex="-1" aria-hidden="true" />
-
-        <button type="submit" class="btn btn--primary">Send Message</button>
-      </form>
-    ) : (
-      <div class="contact__form contact__form--placeholder">
-        <p class="contact__notice">
-          <strong>Form not connected yet.</strong> Add a Formspree or Netlify
-          Forms endpoint in <code>src/components/Contact.astro</code> before
-          launch. Until then, use the email link so nothing gets lost.
-        </p>
-        <a href={`mailto:${site.email}`} class="btn btn--primary">
-          Email Jen
-        </a>
+    <form class="contact__form" action={ENDPOINT} method="POST" data-email={site.email}>
+      <div class="field">
+        <label for="c-name">Your name</label>
+        <input type="text" id="c-name" name="name" required autocomplete="name" />
       </div>
-    )}
+
+      <div class="field">
+        <label for="c-email">Email</label>
+        <input type="email" id="c-email" name="email" required autocomplete="email" />
+      </div>
+
+      <div class="field">
+        <label for="c-phone">Phone <em>(optional)</em></label>
+        <input type="tel" id="c-phone" name="phone" autocomplete="tel" />
+      </div>
+
+      <div class="field">
+        <label for="c-topic">What's this about?</label>
+        <select id="c-topic" name="eventType">
+          <option>General question</option>
+          <option>Party design &amp; planning</option>
+          <option>Baby shower or gender reveal</option>
+          <option>Custom banner</option>
+          <option>Pastries &amp; party goods</option>
+          <option>Buying a painting</option>
+          <option>Commissioning original art</option>
+          <option>Something else</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="c-message">Tell her about it</label>
+        <textarea id="c-message" name="message" rows="5" required></textarea>
+      </div>
+
+      {/* Honeypot — bots fill it, people never see it. */}
+      <input
+        type="text"
+        name="_company"
+        class="visually-hidden"
+        tabindex="-1"
+        autocomplete="off"
+        aria-hidden="true"
+      />
+
+      <p class="contact__err" role="alert" hidden></p>
+      <p class="contact__ok" role="status" hidden>
+        Thanks — that's with Jen. She'll be in touch shortly.
+      </p>
+
+      <button type="submit" class="btn btn--primary">Send Message</button>
+    </form>
   </div>
 </section>
 
@@ -115,10 +116,7 @@ const FORMSPREE_ENDPOINT = ''; // TODO e.g. 'https://formspree.io/f/xxxxxxxx'
     gap: 1rem;
   }
 
-  .contact__direct li {
-    display: grid;
-    gap: 0.15rem;
-  }
+  .contact__direct li { display: grid; gap: 0.15rem; }
 
   .contact__direct span {
     font-size: 0.75rem;
@@ -146,10 +144,8 @@ const FORMSPREE_ENDPOINT = ''; // TODO e.g. 'https://formspree.io/f/xxxxxxxx'
 
   .field { display: grid; gap: 0.4rem; }
 
-  .field label {
-    font-size: var(--step--1);
-    font-weight: 600;
-  }
+  .field label { font-size: var(--step--1); font-weight: 600; }
+  .field em { font-style: normal; font-weight: 400; color: var(--text-muted); }
 
   .field input,
   .field select,
@@ -168,21 +164,94 @@ const FORMSPREE_ENDPOINT = ''; // TODO e.g. 'https://formspree.io/f/xxxxxxxx'
 
   .field input:focus-visible,
   .field select:focus-visible,
-  .field textarea:focus-visible {
-    border-color: var(--orange);
-  }
+  .field textarea:focus-visible { border-color: var(--orange); }
 
-  .contact__notice {
-    padding: 1rem;
-    background: rgba(255, 210, 30, 0.16);
-    border-left: 3px solid var(--lemon-deep);
-    border-radius: 2px;
+  .contact__err,
+  .contact__ok {
+    margin: 0;
+    padding: 0.7rem 0.85rem;
     font-size: var(--step--1);
+    border-radius: 3px;
   }
 
-  .contact__form--placeholder { align-content: start; justify-items: start; }
+  .contact__err {
+    color: #a3200c;
+    background: rgba(244, 97, 26, 0.12);
+    border-left: 3px solid var(--orange);
+  }
+
+  .contact__ok {
+    color: var(--navy-deep);
+    background: rgba(255, 210, 30, 0.22);
+    border-left: 3px solid var(--lemon-deep);
+  }
 
   @media (max-width: 860px) {
     .contact { grid-template-columns: minmax(0, 1fr); }
   }
 </style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.contact__form');
+  if (form) {
+    const err = form.querySelector<HTMLElement>('.contact__err')!;
+    const ok = form.querySelector<HTMLElement>('.contact__ok')!;
+    const fallbackEmail = form.dataset.email || '';
+    const endpoint = form.getAttribute('action') || '';
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      if (data.get('_company')) return; // honeypot
+
+      const name = String(data.get('name') || '').trim();
+      const email = String(data.get('email') || '').trim();
+      if (!name || !email.includes('@')) {
+        ok.hidden = true;
+        err.textContent = 'Please add your name and a valid email so Jen can reply.';
+        err.hidden = false;
+        return;
+      }
+      err.hidden = true;
+
+      const btn = form.querySelector<HTMLButtonElement>('button[type=submit]');
+      const label = btn?.textContent ?? 'Send Message';
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+      }
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          body: new URLSearchParams(data as any),
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.querySelectorAll('.field').forEach((f) => ((f as HTMLElement).hidden = true));
+        btn?.remove();
+        ok.hidden = false;
+      } catch {
+        // Never lose the message — hand it to their own mail client instead.
+        const lines = [
+          ['Name', name],
+          ['Email', email],
+          ['Phone', String(data.get('phone') || '')],
+          ['About', String(data.get('eventType') || '')],
+          ['Message', String(data.get('message') || '')],
+        ]
+          .filter(([, v]) => v)
+          .map(([k, v]) => `${k}: ${v}`);
+        window.location.href =
+          `mailto:${fallbackEmail}?subject=${encodeURIComponent(
+            `Website enquiry — ${data.get('eventType') || 'General question'}`
+          )}&body=${encodeURIComponent(lines.join('\n'))}`;
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = label;
+        }
+      }
+    });
+  }
+</script>
