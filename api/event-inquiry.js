@@ -51,9 +51,28 @@ export default async function handler(req, res) {
   }
 
   const { RESEND_API_KEY, INQUIRY_TO, INQUIRY_FROM } = process.env;
+
   if (!RESEND_API_KEY || !INQUIRY_TO || !INQUIRY_FROM) {
-    console.error('Missing RESEND_API_KEY, INQUIRY_TO, or INQUIRY_FROM');
-    return res.status(500).send('Email is not configured');
+    // Report which names are missing so setup isn't a guessing game. Only
+    // presence is exposed, never a value — and the names are already public in
+    // this repo, so nothing secret leaks.
+    const missing = Object.entries({ RESEND_API_KEY, INQUIRY_TO, INQUIRY_FROM })
+      .filter(([, v]) => !v)
+      .map(([k]) => k);
+    console.error('Missing env vars:', missing.join(', '));
+    return res
+      .status(500)
+      .send(`Email is not configured. Missing in Vercel: ${missing.join(', ')}`);
+  }
+
+  // A key pasted with surrounding quotes or a stray newline is the most common
+  // setup slip and produces a confusing 401 from Resend. Catch it here.
+  const apiKey = RESEND_API_KEY.trim().replace(/^["']|["']$/g, '');
+  if (!apiKey.startsWith('re_')) {
+    console.error('RESEND_API_KEY does not look like a Resend key');
+    return res
+      .status(500)
+      .send('RESEND_API_KEY is set but does not start with "re_" — check for quotes or a truncated paste.');
   }
 
   // Vercel parses application/x-www-form-urlencoded into req.body for us.
@@ -96,7 +115,7 @@ export default async function handler(req, res) {
     fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${RESEND_API_KEY}`,
+        Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
@@ -114,8 +133,14 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      console.error('Resend error (lead)', response.status, await response.text());
-      return res.status(502).send('Could not send the message');
+      const detail = await response.text();
+      console.error('Resend error (lead)', response.status, detail);
+      // Surface Resend's own reason — "domain not verified", "from address not
+      // allowed" and so on are actionable, and hiding them behind a generic
+      // message turns a two-minute fix into an afternoon.
+      return res
+        .status(502)
+        .send(`Resend rejected the message (${response.status}): ${detail}`);
     }
   } catch (err) {
     console.error('Resend request failed (lead)', err);
