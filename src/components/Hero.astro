@@ -98,7 +98,7 @@ import PartyQuiz from './PartyQuiz.astro';
   .hero__lead { align-self: center; }
 
   @media (max-width: 940px) {
-    .hero__inner { grid-template-columns: 1fr; }
+    .hero__inner { grid-template-columns: minmax(0, 1fr); }
     /* Lead box first on mobile — it's the conversion; copy can wait. */
     .hero__lead { order: -1; }
   }

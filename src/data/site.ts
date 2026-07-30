@@ -15,7 +15,8 @@ export const site = {
   shortDescription:
     'Party design, hand-painted banners, custom cookies and pastries, and original paintings by Jen Mazer.',
 
-  url: 'https://jenifermazer.com', // TODO: confirm domain
+  // Keep in step with SITE in astro.config.mjs — Vercel serves www.
+  url: 'https://www.jenifermazer.com',
 
   // --- Contact ------------------------------------------------------------
   email: 'jenilana@live.com',

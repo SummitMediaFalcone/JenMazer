@@ -64,7 +64,22 @@ const { slides, variant = 'gallery', interval = 4500, label } = Astro.props;
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>
 
-  <div class="dots" role="tablist" aria-label="Choose slide"></div>
+  {/*
+    Rendered here, not created in JS. Astro scopes component CSS by stamping a
+    data-astro-cid attribute at build time, so elements created at runtime never
+    match the scoped selectors — these dots were rendering as unstyled default
+    buttons. Building them in markup also means they exist without JS.
+  */}
+  <div class="dots" role="tablist" aria-label="Choose slide">
+    {slides.map((_, i) => (
+      <button
+        type="button"
+        role="tab"
+        aria-label={`Slide ${i + 1}`}
+        aria-selected={i === 0 ? 'true' : 'false'}
+      />
+    ))}
+  </div>
 </div>
 
 <style>
@@ -200,11 +215,16 @@ const { slides, variant = 'gallery', interval = 4500, label } = Astro.props;
     margin-top: 0.9rem;
   }
 
+  /* The dot stays 7px visually, but padding + background-clip gives it a
+     ~27px hit area. A 7px tap target is unusable on a phone. */
   .dots button {
     width: 7px;
     height: 7px;
-    padding: 0;
+    padding: 10px;
+    box-sizing: content-box;
+    margin: -6px;
     background: var(--border);
+    background-clip: content-box;
     border: 0;
     border-radius: 50%;
     cursor: pointer;
@@ -213,6 +233,7 @@ const { slides, variant = 'gallery', interval = 4500, label } = Astro.props;
 
   .dots button[aria-selected='true'] {
     background: var(--orange);
+    background-clip: content-box;
     transform: scale(1.45);
   }
 
@@ -233,20 +254,15 @@ const { slides, variant = 'gallery', interval = 4500, label } = Astro.props;
     let index = 0;
     let timer: number | undefined;
 
-    // Build the dots here rather than in markup so a JS failure doesn't leave
-    // a row of controls that do nothing.
-    items.forEach((_, i) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.setAttribute('role', 'tab');
-      b.setAttribute('aria-label', `Slide ${i + 1}`);
+    // Dots are rendered server-side (see the markup comment) so they carry the
+    // scoped styles; JS only wires them up.
+    const dotEls = Array.from(dots.querySelectorAll('button'));
+    dotEls.forEach((b, i) => {
       b.addEventListener('click', () => {
         go(i);
         stop();
       });
-      dots.appendChild(b);
     });
-    const dotEls = Array.from(dots.querySelectorAll('button'));
 
     /**
      * Where the track actually ends up when slide `i` is selected.

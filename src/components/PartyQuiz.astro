@@ -12,11 +12,11 @@ import { eventTypes, guestCounts, budgetRanges } from '../data/eventForm';
  *
  * Jen's photo sits at the top on purpose. Party work is bought from a person.
  *
- * Sends via the same Netlify Function + Resend handler as before. Until
- * ENDPOINT is set it falls back to a prefilled email so nothing is silently
- * dropped — see netlify/functions/event-inquiry.js.
+ * Posts to /api/event-inquiry, a Vercel serverless function that sends the
+ * lead through Resend. If that call fails for any reason, the submit handler
+ * falls back to a prefilled email rather than losing the enquiry.
  */
-const ENDPOINT = ''; // Set to '/.netlify/functions/event-inquiry' once keyed
+const ENDPOINT = '/api/event-inquiry';
 
 const dateOptions = ['Within 1 month', '1–3 months', '3–6 months', '6+ months', 'Not sure yet'];
 
@@ -27,7 +27,12 @@ interface Props {
 const { compact = false } = Astro.props;
 ---
 
-<div class="quiz" class:list={[compact && 'quiz--compact']} data-endpoint={ENDPOINT} data-email={site.email}>
+<div
+  class="quiz"
+  class:list={[compact && 'quiz--compact']}
+  data-endpoint={ENDPOINT}
+  data-email={site.email}
+>
   <div class="quiz__head">
     <div class="quiz__portrait">
       <img
@@ -524,41 +529,75 @@ const { compact = false } = Astro.props;
       message: 'Notes',
     };
 
-    form.addEventListener('submit', (event) => {
-      const data = new FormData(form);
-      if (data.get('_company')) {
-        event.preventDefault();
-        return;
-      }
-
-      const name = String(data.get('name') || '').trim();
-      const email = String(data.get('email') || '').trim();
-
-      if (!name || !email || !email.includes('@')) {
-        event.preventDefault();
-        err.textContent = 'Please add your name and a valid email so Jen can reply.';
-        err.hidden = false;
-        return;
-      }
-      err.hidden = true;
-
-      // With a real endpoint, let the browser POST it normally.
-      if (endpoint) return;
-
-      // Otherwise compose a prefilled email rather than silently dropping it.
-      event.preventDefault();
+    function mailtoFallback(data: FormData) {
       const lines = Object.entries(LABELS)
         .map(([key, label]) => [label, String(data.get(key) ?? '').trim()])
         .filter(([, value]) => value !== '')
         .map(([label, value]) => `${label}: ${value}`);
+
+      const services = data.getAll('services').map(String);
+      if (services.length) lines.push(`Needs: ${services.join(', ')}`);
 
       const subject = `Party inquiry — ${data.get('eventType') || 'New event'}`;
       window.location.href =
         `mailto:${fallbackEmail}` +
         `?subject=${encodeURIComponent(subject)}` +
         `&body=${encodeURIComponent(lines.join('\n'))}`;
+    }
 
-      show(LAST_QUESTION + 1);
+    form.addEventListener('submit', async (event) => {
+      // Always handled in JS. Letting the browser POST natively would dump the
+      // user on a raw error page if the mail service is misconfigured, and
+      // they'd never come back.
+      event.preventDefault();
+
+      const data = new FormData(form);
+      if (data.get('_company')) return; // honeypot
+
+      const name = String(data.get('name') || '').trim();
+      const email = String(data.get('email') || '').trim();
+
+      if (!name || !email || !email.includes('@')) {
+        err.textContent = 'Please add your name and a valid email so Jen can reply.';
+        err.hidden = false;
+        return;
+      }
+      err.hidden = true;
+
+      if (!endpoint) {
+        mailtoFallback(data);
+        show(LAST_QUESTION + 1);
+        return;
+      }
+
+      const submit = form.querySelector<HTMLButtonElement>('.quiz__submit');
+      const original = submit?.textContent ?? 'Send to Jen';
+      if (submit) {
+        submit.disabled = true;
+        submit.textContent = 'Sending…';
+      }
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          body: new URLSearchParams(data as any),
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        });
+        // The function answers 303 to /thank-you; fetch follows it, so an ok
+        // response means the mail went out.
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        show(LAST_QUESTION + 1);
+      } catch {
+        // Never lose the enquiry. If the endpoint is down or not yet keyed,
+        // hand it to their mail client instead.
+        mailtoFallback(data);
+        show(LAST_QUESTION + 1);
+      } finally {
+        if (submit) {
+          submit.disabled = false;
+          submit.textContent = original;
+        }
+      }
     });
 
     show(1);

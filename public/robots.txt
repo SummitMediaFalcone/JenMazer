@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# TODO: update the host once the real domain is live.
-Sitemap: https://jenifermazer.com/sitemap-index.xml
+Sitemap: https://www.jenifermazer.com/sitemap-index.xml

@@ -176,7 +176,7 @@ const others = artworks.filter((a) => a.slug !== feature.slug);
   }
 
   @media (max-width: 860px) {
-    .feature { grid-template-columns: 1fr; }
+    .feature { grid-template-columns: minmax(0, 1fr); }
     .feature__frame { max-width: 460px; }
   }
 </style>

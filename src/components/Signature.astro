@@ -92,7 +92,11 @@ const {
      when the real one drops in. */
   .signature__text {
     font-family: var(--font-script);
-    font-size: calc(var(--sig-height) * 1.6);
+    /* nowrap means this can't reflow, so on a narrow screen the full name
+       overhangs the column and gets clipped by the hero's overflow:hidden.
+       The vw cap keeps it inside the gutter on phones and never fires on
+       desktop, where the calc() value is always the smaller of the two. */
+    font-size: min(calc(var(--sig-height) * 1.6), 14vw);
     line-height: 0.76;
     white-space: nowrap;
     letter-spacing: -0.005em;
@@ -102,7 +106,7 @@ const {
   }
 
   .signature__rule {
-    width: calc(var(--sig-height) * 4.6);
+    width: min(calc(var(--sig-height) * 4.6), 40vw);
     height: calc(var(--sig-height) * 0.2);
     margin-top: calc(var(--sig-height) * 0.06);
     margin-left: calc(var(--sig-height) * 0.14);
