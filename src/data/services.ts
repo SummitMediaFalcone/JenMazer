@@ -20,7 +20,8 @@ export type Service = {
   imageDir: 'parties' | 'banners';
   alt: string;
   includes: string[];
-  /** e.g. 'From $85' — buyers self-qualify, which saves Jen dead inquiries. */
+  /** Optional 'From $85' line. Left empty by choice — Jen quotes individually,
+   *  and the card hides this line when it's blank. */
   startingAt: string;
   /** Long-tail phrases this service should rank for. */
   keywords: string[];
@@ -41,7 +42,7 @@ export const services: Service[] = [
       'Holiday and seasonal designs',
       'Sizes from tabletop to full backdrop',
     ],
-    startingAt: '', // TODO
+    startingAt: '', // Intentionally blank — Jen quotes each job individually
     keywords: [
       'custom hand painted banner',
       'personalized baby shower banner',
@@ -64,7 +65,7 @@ export const services: Service[] = [
       'Dessert and pastry table',
       'Favors, place settings, and table styling',
     ],
-    startingAt: '', // TODO
+    startingAt: '', // Intentionally blank — Jen quotes each job individually
     keywords: [
       'baby shower planner',
       'gender reveal cupcakes',
@@ -87,7 +88,7 @@ export const services: Service[] = [
       'Tablescape and dessert display',
       'Coordination from concept to setup',
     ],
-    startingAt: '', // TODO
+    startingAt: '', // Intentionally blank — Jen quotes each job individually
     keywords: [
       'party planner',
       'custom party design',
@@ -110,7 +111,7 @@ export const services: Service[] = [
       'Chocolate-dipped pretzels and treat boxes',
       'Themed to your event design',
     ],
-    startingAt: '', // TODO
+    startingAt: '', // Intentionally blank — Jen quotes each job individually
     keywords: [
       'custom decorated cookies',
       'homemade cannoli',
