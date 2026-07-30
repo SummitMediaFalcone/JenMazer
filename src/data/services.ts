@@ -286,16 +286,8 @@ export const gallery: GalleryItem[] = [
   },
 ];
 
-// ---------------------------------------------------------------------------
-// IMPORTANT — food regulation
-//
-// Selling baked goods is regulated at the state level (US "cottage food" laws).
-// Rules on what she can sell, where, how it's labeled, and whether a license or
-// kitchen inspection is required vary a lot by state, and some states bar online
-// or shipped sales entirely.
-//
-// Before the pastry side goes live, confirm her state's cottage food rules and
-// add any required label or disclosure text here. Flagged rather than guessed —
-// getting it wrong is a real liability, not a design problem.
-// ---------------------------------------------------------------------------
-export const cottageFoodDisclosure = ''; // TODO if her state requires one
+/**
+ * Optional line shown under the dessert section — e.g. a kitchen or licensing
+ * note, if Jen ever wants one displayed. Empty renders nothing.
+ */
+export const kitchenNote = '';

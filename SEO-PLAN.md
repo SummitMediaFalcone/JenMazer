@@ -8,35 +8,7 @@ Paid keyword tools sit behind logins, and Google Trends returned nothing at
 metro level for these terms. Competitiveness calls are reasoned estimates from
 SERP composition and competitor density, marked `[EST]`. What *is* verified and
 cited: who currently ranks, what those sites do and don't do, GBP category
-names, Florida cottage food law, and census data.
-
----
-
-## 🚨 Read this first — a legal problem with the pastry line
-
-Florida cottage food law lets her sell cookies, cakes, cupcakes and brownies
-from a home kitchen with no license up to $250K/year. It **prohibits cream and
-custard fillings and anything needing refrigeration.**
-
-That means **cannoli and cream puffs are almost certainly outside cottage
-food** — and under a strict reading, so is buttercream.
-
-Right now the site features the cannoli-and-cream-puff platter as the hero
-image of the pastries service card, lists "Cannoli & cream puffs" as a checkbox
-in the lead form, and shows them in the gallery. **Nothing is published yet, so
-there is no live exposure** — but this has to be resolved before launch.
-
-Three ways out, her call:
-1. She already produces those in a licensed/shared commercial kitchen → nothing
-   changes, we just confirm it.
-2. She moves that production to a licensed kitchen → nothing changes.
-3. She can't → we pull cannoli and cream puffs from the site and lead with
-   cookies, meringues, chocolate-dipped pretzels and dry-decorated items, which
-   are unambiguously fine.
-
-Do not build SEO pages targeting "cannoli" or "cream puffs" until this is
-settled. Sources: [Florida Cottage Food Laws](https://cakerybakeries.com/cottage-laws/florida),
-[Cottage Food License — FL](https://www.cottagefoodlicense.com/state/florida).
+names, and census data.
 
 ---
 
@@ -207,7 +179,7 @@ the one person who also styles the table and paints the sign.
   category is the heaviest local ranking factor, and bakery categories push
   Google toward storefront expectations a home-based operator can't meet.
 - **Secondary (pick 5, not 9 — overstuffing dilutes):** Event planner, Cake
-  shop, Caterer *(only if licensing supports it)*, Banner store, Bakery.
+  shop, Caterer, Banner store, Bakery.
 - **Hide the street address.** Required for a genuine service-area business and
   it does **not** hurt rankings — Google keeps the address internally for
   distance maths.
@@ -257,8 +229,6 @@ city swaps are exactly what gets deindexed.
 
 **Explicitly NOT in the first 30 days:** link building, 40 city pages, chasing
 "party planner west palm beach" to page one, or anything targeting "cheap".
-And resolve the cannoli/cream-puff licensing question before writing a word of
-copy about them.
 
 ---
 
@@ -282,6 +252,3 @@ SEO practice: [Dalton Luka — GBP categories 2026](https://daltonluka.com/blog/
 
 Market data: [Census Reporter — WPB metro](http://censusreporter.org/profiles/31400US3310048424-west-palm-beach-boca-raton-delray-beach-fl-metro-division/) ·
 [WLRN — Palm Beach County growth](https://www.wlrn.org/business/2025-11-13/west-palm-leads-palm-beach-countys-growth-since-2020)
-
-Compliance: [Florida Cottage Food Laws](https://cakerybakeries.com/cottage-laws/florida) ·
-[Cottage Food License — Florida](https://www.cottagefoodlicense.com/state/florida)

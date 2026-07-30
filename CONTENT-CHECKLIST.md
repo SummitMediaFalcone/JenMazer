@@ -105,19 +105,6 @@ Free, and it's the main lever for the local party/event searches.
 
 ---
 
-## ⚠️ One thing to check before the pastry side goes live
-
-Selling baked goods is regulated per state (US "cottage food" laws). What she can
-sell, where she can sell it, how it must be labeled, and whether she needs a license
-or a kitchen inspection all vary — and some states don't allow online or shipped
-sales at all.
-
-I flagged this in `src/data/services.ts` rather than guessing, because getting it
-wrong is a legal problem, not a design one. Worth ten minutes on her state's
-agriculture department site before that section is public.
-
----
-
 ## Two photos I held back
 
 They're in `photos-review/` rather than on the site:
